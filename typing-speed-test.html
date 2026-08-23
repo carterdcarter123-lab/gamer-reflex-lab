@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Typing Speed Test — Free WPM Test</title>
+<meta name="description" content="Free typing speed test. Measure your words per minute (WPM) and accuracy. No sign-up needed.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="site-logo">GAMER REFLEX LAB</a>
+    <div class="site-links">
+      <a href="click-speed-test.html">Click Speed</a>
+      <a href="spacebar-counter.html">Spacebar</a>
+      <a href="reaction-time-test.html">Reaction Time</a>
+      <a href="aim-trainer.html">Aim Trainer</a>
+      <a href="typing-speed-test.html" class="active">Typing Speed</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="page-head">
+    <div class="eyebrow">Typing Test</div>
+    <h1>Typing Speed Test</h1>
+    <p class="subhead">Type the passage below as fast and accurately as you can. Your timer starts on your first keystroke.</p>
+  </div>
+
+  <div class="stat-row">
+    <div>WPM<b id="wpmStat">0</b></div>
+    <div>Accuracy<b id="accStat">100%</b></div>
+    <div>Time left<b id="timeLeft">30.0s</b></div>
+  </div>
+
+  <div class="timer-select" id="timerSelect">
+    <button class="pill" data-time="15">15s</button>
+    <button class="pill" data-time="30">30s</button>
+    <button class="pill" data-time="60">60s</button>
+  </div>
+
+  <div class="type-box" id="typeBox">
+    <div class="type-passage" id="passage"></div>
+    <div class="type-hint">Click here and start typing to begin</div>
+  </div>
+  <input type="text" class="type-input-catcher" id="catcher" autocomplete="off" autocapitalize="off" spellcheck="false">
+
+  <div class="result" id="result">
+    <div class="tier" id="tier">Result</div>
+    <div class="final-cps" id="finalCps">0 WPM</div>
+    <div class="meter"><div class="meter-fill" id="meterFill"></div></div>
+    <button class="retry" id="retryBtn">Try again</button>
+  </div>
+
+  <div class="content">
+    <h2>What's a good typing speed?</h2>
+    <p>Average typing speed is around 40 words per minute. Proficient typists usually land between 60 and 80 WPM, and professional typists or competitive typing players can exceed 100 WPM, often while keeping accuracy above 97%.</p>
+
+    <div class="faq-item">
+      <h3>How is WPM calculated?</h3>
+      <p>Words per minute is calculated by dividing the number of correctly typed characters by 5 (the average word length), then dividing by the time elapsed in minutes.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does accuracy affect my WPM score?</h3>
+      <p>Yes, only correctly typed characters count toward your WPM. Mistyped characters lower both your accuracy percentage and your effective speed.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why does the passage change each time?</h3>
+      <p>A new passage is chosen for each attempt so you can't improve your score simply by memorizing the text.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="tagline">BUILT FOR PEOPLE WHO CLICK FAST</div>
+    <div class="footer-links">
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  const passages = [
+    "The mouse moved smoothly across the pad as the player lined up the next shot with total focus.",
+    "Fast reflexes and steady hands separate good players from great ones in almost every competitive game.",
+    "A quiet room, a comfortable chair, and a well tuned keyboard can make all the difference during a long session.",
+    "Practice does not make perfect, but it does make patterns familiar enough to react without thinking.",
+    "Every second counts when the timer is running, so staying calm under pressure matters more than raw speed alone."
+  ];
+
+  const typeBox = document.getElementById('typeBox');
+  const passageEl = document.getElementById('passage');
+  const catcher = document.getElementById('catcher');
+  const wpmStat = document.getElementById('wpmStat');
+  const accStat = document.getElementById('accStat');
+  const timeLeftEl = document.getElementById('timeLeft');
+  const timerSelect = document.getElementById('timerSelect');
+  const resultEl = document.getElementById('result');
+  const tierEl = document.getElementById('tier');
+  const finalCpsEl = document.getElementById('finalCps');
+  const meterFill = document.getElementById('meterFill');
+  const retryBtn = document.getElementById('retryBtn');
+
+  let duration = 30;
+  let passage = '';
+  let startTime = null;
+  let timerInterval = null;
+  let running = false;
+  let correctChars = 0;
+  let typedChars = 0;
+
+  function setDuration(sec, btn){
+    duration = sec;
+    [...timerSelect.children].forEach(b => b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    resetState();
+  }
+  timerSelect.addEventListener('click', (e) => {
+    const btn = e.target.closest('.pill');
+    if(!btn) return;
+    setDuration(Number(btn.dataset.time), btn);
+  });
+
+  function pickPassage(){
+    passage = passages[Math.floor(Math.random() * passages.length)];
+  }
+
+  function renderPassage(typedValue){
+    let html = '';
+    for(let i = 0; i < passage.length; i++){
+      const ch = passage[i];
+      if(i < typedValue.length){
+        html += typedValue[i] === ch
+          ? '<span class="correct">' + escapeHtml(ch) + '</span>'
+          : '<span class="incorrect">' + escapeHtml(ch) + '</span>';
+      } else if(i === typedValue.length){
+        html += '<span class="current">' + escapeHtml(ch) + '</span>';
+      } else {
+        html += '<span>' + escapeHtml(ch) + '</span>';
+      }
+    }
+    passageEl.innerHTML = html;
+  }
+
+  function escapeHtml(ch){
+    if(ch === '&') return '&amp;';
+    if(ch === '<') return '&lt;';
+    if(ch === '>') return '&gt;';
+    return ch;
+  }
+
+  function resetState(){
+    running = false;
+    correctChars = 0;
+    typedChars = 0;
+    clearInterval(timerInterval);
+    pickPassage();
+    renderPassage('');
+    catcher.value = '';
+    wpmStat.textContent = '0';
+    accStat.textContent = '100%';
+    timeLeftEl.textContent = duration.toFixed(1) + 's';
+    resultEl.classList.remove('show');
+  }
+
+  typeBox.addEventListener('click', () => catcher.focus());
+
+  catcher.addEventListener('input', () => {
+    const value = catcher.value;
+
+    if(!running){
+      running = true;
+      startTime = Date.now();
+      timerInterval = setInterval(() => {
+        const elapsed = (Date.now() - startTime) / 1000;
+        const remaining = Math.max(0, duration - elapsed);
+        timeLeftEl.textContent = remaining.toFixed(1) + 's';
+        if(remaining <= 0){ endTest(); }
+      }, 50);
+    }
+
+    if(!running) return;
+
+    typedChars = value.length;
+    correctChars = 0;
+    for(let i = 0; i < value.length; i++){
+      if(value[i] === passage[i]) correctChars++;
+    }
+
+    renderPassage(value);
+    updateLiveStats();
+
+    if(value.length >= passage.length){
+      endTest();
+    }
+  });
+
+  function updateLiveStats(){
+    const elapsedMin = Math.max((Date.now() - startTime) / 60000, 0.0005);
+    const wpm = Math.round((correctChars / 5) / elapsedMin);
+    const acc = typedChars > 0 ? Math.round((correctChars / typedChars) * 100) : 100;
+    wpmStat.textContent = wpm;
+    accStat.textContent = acc + '%';
+  }
+
+  function endTest(){
+    clearInterval(timerInterval);
+    running = false;
+    catcher.blur();
+    timeLeftEl.textContent = '0.0s';
+    updateLiveStats();
+    showResult();
+  }
+
+  function showResult(){
+    const wpm = Number(wpmStat.textContent);
+    const acc = Number(accStat.textContent.replace('%',''));
+    let tier, pct;
+    if(wpm < 30){ tier = 'Casual typer'; pct = 20; }
+    else if(wpm < 50){ tier = 'Skilled typer'; pct = 45; }
+    else if(wpm < 70){ tier = 'Fast typer'; pct = 70; }
+    else if(wpm < 90){ tier = 'Elite typer'; pct = 90; }
+    else { tier = 'Legendary typer'; pct = 100; }
+
+    tierEl.textContent = tier;
+    finalCpsEl.textContent = wpm + ' WPM · ' + acc + '% accuracy';
+    meterFill.style.width = '0%';
+    requestAnimationFrame(() => { meterFill.style.width = pct + '%'; });
+    resultEl.classList.add('show');
+  }
+
+  retryBtn.addEventListener('click', resetState);
+
+  setDuration(30, timerSelect.children[1]);
+})();
+</script>
+
+</body>
+</html>

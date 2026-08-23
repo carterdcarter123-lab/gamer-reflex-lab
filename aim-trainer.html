@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aim Trainer — Free Online Click Accuracy Test</title>
+<meta name="description" content="Free online aim trainer. Click targets as fast as you can and measure your speed and accuracy. No download needed, works in your browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="site-logo">GAMER REFLEX LAB</a>
+    <div class="site-links">
+      <a href="click-speed-test.html">Click Speed</a>
+      <a href="spacebar-counter.html">Spacebar</a>
+      <a href="reaction-time-test.html">Reaction Time</a>
+      <a href="aim-trainer.html" class="active">Aim Trainer</a>
+      <a href="typing-speed-test.html">Typing Speed</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="page-head">
+    <div class="eyebrow">Accuracy Test</div>
+    <h1>Aim Trainer</h1>
+    <p class="subhead">Click the targets as fast as you can. Miss the target and it counts against your accuracy.</p>
+  </div>
+
+  <div class="stat-row">
+    <div>Hits<b id="hitCount">0</b></div>
+    <div>Accuracy<b id="accuracy">—</b></div>
+    <div>Time left<b id="timeLeft">30.0s</b></div>
+  </div>
+
+  <div class="timer-select" id="timerSelect">
+    <button class="pill" data-time="15">15s</button>
+    <button class="pill" data-time="30">30s</button>
+    <button class="pill" data-time="60">60s</button>
+  </div>
+
+  <div class="aim-zone" id="aimZone">
+    <div class="overlay-cta" id="overlayCta">
+      <span class="big">Click to start</span>
+      <span>Hit the targets as they appear</span>
+    </div>
+  </div>
+
+  <div class="result" id="result">
+    <div class="tier" id="tier">Result</div>
+    <div class="final-cps" id="finalCps">0 hits</div>
+    <div class="meter"><div class="meter-fill" id="meterFill"></div></div>
+    <button class="retry" id="retryBtn">Try again</button>
+  </div>
+
+  <div class="content">
+    <h2>What does this measure?</h2>
+    <p>This tool tracks two things: how many targets you can hit in the time given, and how accurate your clicks are overall. A high hit count with low accuracy usually means you're clicking too fast and missing often, while high accuracy with fewer hits suggests being more careful than necessary.</p>
+
+    <div class="faq-item">
+      <h3>Why do misses count against accuracy?</h3>
+      <p>Every click inside the play area counts as an attempt. If a click doesn't land on the target, it's recorded as a miss, and accuracy is calculated as hits divided by total clicks.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Do targets get faster over time?</h3>
+      <p>No, target spawn timing stays consistent throughout a single run so your score reflects raw aim rather than a difficulty curve.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does this work on mobile?</h3>
+      <p>Yes, tapping the targets works the same as clicking on desktop.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="tagline">BUILT FOR PEOPLE WHO CLICK FAST</div>
+    <div class="footer-links">
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  const aimZone = document.getElementById('aimZone');
+  const overlayCta = document.getElementById('overlayCta');
+  const hitCountEl = document.getElementById('hitCount');
+  const accuracyEl = document.getElementById('accuracy');
+  const timeLeftEl = document.getElementById('timeLeft');
+  const timerSelect = document.getElementById('timerSelect');
+  const resultEl = document.getElementById('result');
+  const tierEl = document.getElementById('tier');
+  const finalCpsEl = document.getElementById('finalCps');
+  const meterFill = document.getElementById('meterFill');
+  const retryBtn = document.getElementById('retryBtn');
+
+  let duration = 30;
+  let hits = 0;
+  let attempts = 0;
+  let startTime = null;
+  let timerInterval = null;
+  let running = false;
+  let currentTarget = null;
+
+  function setDuration(sec, btn){
+    duration = sec;
+    [...timerSelect.children].forEach(b => b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    resetState();
+  }
+  timerSelect.addEventListener('click', (e) => {
+    const btn = e.target.closest('.pill');
+    if(!btn) return;
+    setDuration(Number(btn.dataset.time), btn);
+  });
+  setDuration(30, timerSelect.children[1]);
+
+  function resetState(){
+    running = false;
+    hits = 0;
+    attempts = 0;
+    clearInterval(timerInterval);
+    hitCountEl.textContent = '0';
+    accuracyEl.textContent = '—';
+    timeLeftEl.textContent = duration.toFixed(1) + 's';
+    resultEl.classList.remove('show');
+    removeTarget();
+    overlayCta.style.display = 'flex';
+    overlayCta.innerHTML = '<span class="big">Click to start</span><span>Hit the targets as they appear</span>';
+  }
+
+  function removeTarget(){
+    if(currentTarget){ currentTarget.remove(); currentTarget = null; }
+  }
+
+  function spawnTarget(){
+    removeTarget();
+    const rect = aimZone.getBoundingClientRect();
+    const margin = 30;
+    const x = margin + Math.random() * (rect.width - margin * 2);
+    const y = margin + Math.random() * (rect.height - margin * 2);
+    const t = document.createElement('div');
+    t.className = 'aim-target';
+    t.style.left = x + 'px';
+    t.style.top = y + 'px';
+    t.addEventListener('click', (e) => {
+      e.stopPropagation();
+      registerHit(x, y);
+    });
+    aimZone.appendChild(t);
+    currentTarget = t;
+  }
+
+  function registerHit(x, y){
+    if(!running) return;
+    hits++;
+    attempts++;
+    hitCountEl.textContent = hits;
+    accuracyEl.textContent = Math.round((hits/attempts)*100) + '%';
+    const pop = document.createElement('div');
+    pop.className = 'aim-pop';
+    pop.style.left = x + 'px';
+    pop.style.top = y + 'px';
+    aimZone.appendChild(pop);
+    setTimeout(() => pop.remove(), 350);
+    spawnTarget();
+  }
+
+  function registerMiss(x, y){
+    if(!running) return;
+    attempts++;
+    accuracyEl.textContent = Math.round((hits/attempts)*100) + '%';
+    const flash = document.createElement('div');
+    flash.className = 'miss-flash';
+    flash.style.left = x + 'px';
+    flash.style.top = y + 'px';
+    aimZone.appendChild(flash);
+    setTimeout(() => flash.remove(), 400);
+  }
+
+  function startTest(){
+    running = true;
+    startTime = Date.now();
+    overlayCta.style.display = 'none';
+    spawnTarget();
+    timerInterval = setInterval(() => {
+      const elapsed = (Date.now() - startTime) / 1000;
+      const remaining = Math.max(0, duration - elapsed);
+      timeLeftEl.textContent = remaining.toFixed(1) + 's';
+      if(remaining <= 0){ endTest(); }
+    }, 50);
+  }
+
+  function endTest(){
+    clearInterval(timerInterval);
+    running = false;
+    removeTarget();
+    timeLeftEl.textContent = '0.0s';
+    showResult();
+  }
+
+  function showResult(){
+    const acc = attempts > 0 ? Math.round((hits/attempts)*100) : 0;
+    let tier, pct;
+    const hps = hits / duration;
+    if(hps < 1){ tier = 'Casual aim'; pct = 20; }
+    else if(hps < 1.5){ tier = 'Steady aim'; pct = 45; }
+    else if(hps < 2){ tier = 'Sharp aim'; pct = 70; }
+    else if(hps < 2.5){ tier = 'Precise aim'; pct = 90; }
+    else { tier = 'Deadly aim'; pct = 100; }
+
+    tierEl.textContent = tier;
+    finalCpsEl.textContent = hits + ' hits · ' + acc + '% accuracy';
+    meterFill.style.width = '0%';
+    requestAnimationFrame(() => { meterFill.style.width = pct + '%'; });
+    resultEl.classList.add('show');
+  }
+
+  aimZone.addEventListener('click', (e) => {
+    if(!running){ startTest(); return; }
+    if(e.target === aimZone){
+      const rect = aimZone.getBoundingClientRect();
+      registerMiss(e.clientX - rect.left, e.clientY - rect.top);
+    }
+  });
+
+  retryBtn.addEventListener('click', resetState);
+})();
+</script>
+
+</body>
+</html>
