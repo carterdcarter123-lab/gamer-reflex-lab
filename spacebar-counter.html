@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spacebar Counter — Test Your Spacebar Speed</title>
+<meta name="description" content="Free spacebar speed test. Find out how many times you can press the spacebar per second in 5, 10, 30 or 60 seconds.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="site-logo">GAMER REFLEX LAB</a>
+    <div class="site-links">
+      <a href="click-speed-test.html">Click Speed</a>
+      <a href="spacebar-counter.html" class="active">Spacebar</a>
+      <a href="reaction-time-test.html">Reaction Time</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="page-head">
+    <div class="eyebrow">Keyboard Test</div>
+    <h1>Spacebar Counter</h1>
+    <p class="subhead">See how many times you can press the spacebar per second. Pick a time, click the box below to focus it, then start mashing.</p>
+  </div>
+
+  <div class="scoreboard">
+    <div class="cps-readout" id="cpsReadout">0.0</div>
+    <div class="cps-label">Presses per second</div>
+  </div>
+
+  <div class="stat-row">
+    <div>Presses<b id="clickCount">0</b></div>
+    <div>Time left<b id="timeLeft">5.0s</b></div>
+  </div>
+
+  <div class="timer-select" id="timerSelect">
+    <button class="pill" data-time="5">5s</button>
+    <button class="pill" data-time="10">10s</button>
+    <button class="pill" data-time="30">30s</button>
+    <button class="pill" data-time="60">60s</button>
+  </div>
+
+  <div class="click-zone" id="clickZone" role="button" tabindex="0" aria-label="Press zone, click here first then press spacebar as fast as you can">
+    <div class="cta">
+      <span class="big">Click here, then mash space</span>
+      <span>Needs a physical keyboard</span>
+    </div>
+  </div>
+
+  <div class="result" id="result">
+    <div class="tier" id="tier">Result</div>
+    <div class="final-cps" id="finalCps">0.0 PPS</div>
+    <div class="meter"><div class="meter-fill" id="meterFill"></div></div>
+    <button class="retry" id="retryBtn">Try again</button>
+  </div>
+
+  <div class="content">
+    <h2>What's a good spacebar speed?</h2>
+    <p>Most people can press the spacebar between 5 and 8 times per second in short bursts. Games that involve mashing the spacebar for charging, jumping, or building momentum reward both raw speed and being able to sustain it over a longer test.</p>
+
+    <div class="faq-item">
+      <h3>Why do I need to click the box first?</h3>
+      <p>The page needs to know you're ready to interact with the test area before it starts counting spacebar presses, otherwise pressing space while browsing the page would trigger the test by accident.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does this work on mobile?</h3>
+      <p>No, this test needs a physical spacebar key, so it's built for desktop and laptop keyboards rather than touchscreens.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How is presses per second calculated?</h3>
+      <p>It works the same way as a click speed test: your total spacebar presses are divided by the total test duration, so 40 presses in 10 seconds equals 4 presses per second.</p>
+    </div>
+  </div>
+
+  <footer>BUILT FOR PEOPLE WHO CLICK FAST</footer>
+
+</div>
+
+<script>
+(function(){
+  const clickZone = document.getElementById('clickZone');
+  const cpsReadout = document.getElementById('cpsReadout');
+  const clickCountEl = document.getElementById('clickCount');
+  const timeLeftEl = document.getElementById('timeLeft');
+  const timerSelect = document.getElementById('timerSelect');
+  const resultEl = document.getElementById('result');
+  const tierEl = document.getElementById('tier');
+  const finalCpsEl = document.getElementById('finalCps');
+  const meterFill = document.getElementById('meterFill');
+  const retryBtn = document.getElementById('retryBtn');
+
+  let duration = 5;
+  let presses = 0;
+  let startTime = null;
+  let timerInterval = null;
+  let running = false;
+  let armed = false; // zone has focus/is ready to accept spacebar
+
+  function setDuration(sec, btn){
+    duration = sec;
+    [...timerSelect.children].forEach(b => b.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+    resetState();
+  }
+
+  timerSelect.addEventListener('click', (e) => {
+    const btn = e.target.closest('.pill');
+    if(!btn) return;
+    setDuration(Number(btn.dataset.time), btn);
+  });
+  setDuration(5, timerSelect.children[0]);
+
+  function resetState(){
+    running = false;
+    presses = 0;
+    clearInterval(timerInterval);
+    cpsReadout.textContent = '0.0';
+    cpsReadout.classList.remove('pulse');
+    clickCountEl.textContent = '0';
+    timeLeftEl.textContent = duration.toFixed(1) + 's';
+    resultEl.classList.remove('show');
+    clickZone.querySelector('.cta').innerHTML = '<span class="big">Click here, then mash space</span><span>Needs a physical keyboard</span>';
+  }
+
+  function spawnRipple(x, y){
+    const r = document.createElement('div');
+    r.className = 'ripple';
+    r.style.left = x + 'px';
+    r.style.top = y + 'px';
+    clickZone.appendChild(r);
+    setTimeout(() => r.remove(), 500);
+  }
+
+  clickZone.addEventListener('click', () => {
+    armed = true;
+    clickZone.focus();
+    if(!running){
+      clickZone.querySelector('.cta').innerHTML = '<span class="big">Ready — press space</span><span>Timer starts on first press</span>';
+    }
+  });
+
+  window.addEventListener('keydown', (e) => {
+    if(e.code !== 'Space' && e.key !== ' ') return;
+    if(!armed) return;
+    e.preventDefault();
+
+    const rect = clickZone.getBoundingClientRect();
+    spawnRipple(rect.width / 2, rect.height / 2);
+
+    if(!running){ startTest(); }
+
+    if(running){
+      presses++;
+      clickCountEl.textContent = presses;
+      const elapsed = (Date.now() - startTime) / 1000;
+      const livePps = elapsed > 0 ? presses / elapsed : 0;
+      cpsReadout.textContent = livePps.toFixed(1);
+      cpsReadout.classList.add('pulse');
+      setTimeout(() => cpsReadout.classList.remove('pulse'), 80);
+    }
+  });
+
+  function startTest(){
+    running = true;
+    startTime = Date.now();
+    clickZone.querySelector('.cta').innerHTML = '<span class="big">Go!</span><span>Keep mashing space</span>';
+    timerInterval = setInterval(() => {
+      const elapsed = (Date.now() - startTime) / 1000;
+      const remaining = Math.max(0, duration - elapsed);
+      timeLeftEl.textContent = remaining.toFixed(1) + 's';
+      if(remaining <= 0){ endTest(); }
+    }, 50);
+  }
+
+  function endTest(){
+    clearInterval(timerInterval);
+    running = false;
+    armed = false;
+    const finalPps = presses / duration;
+    timeLeftEl.textContent = '0.0s';
+    cpsReadout.textContent = finalPps.toFixed(1);
+    showResult(finalPps);
+    clickZone.querySelector('.cta').innerHTML = '<span class="big">Time!</span><span>Press try again to retry</span>';
+  }
+
+  function showResult(pps){
+    let tier, pct;
+    if(pps < 4){ tier = 'Casual masher'; pct = 20; }
+    else if(pps < 6){ tier = 'Skilled masher'; pct = 45; }
+    else if(pps < 8){ tier = 'Pro masher'; pct = 70; }
+    else if(pps < 10){ tier = 'Elite masher'; pct = 90; }
+    else { tier = 'Legendary masher'; pct = 100; }
+
+    tierEl.textContent = tier;
+    finalCpsEl.textContent = pps.toFixed(1) + ' PPS';
+    meterFill.style.width = '0%';
+    requestAnimationFrame(() => { meterFill.style.width = pct + '%'; });
+    resultEl.classList.add('show');
+  }
+
+  retryBtn.addEventListener('click', () => { resetState(); armed = false; });
+})();
+</script>
+
+</body>
+</html>

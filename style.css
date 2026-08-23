@@ -1,0 +1,338 @@
+/* ============ Gamer Reflex Lab — shared design system ============ */
+:root{
+  --bg: #1a1025;
+  --bg-alt: #150c1e;
+  --surface: #241733;
+  --surface-2: #2e1e42;
+  --amber: #f2a93b;
+  --amber-dim: #c98a2c;
+  --violet: #8b7fd9;
+  --cream: #f5efe6;
+  --muted: #b6a9c9;
+  --line: #3a2a4f;
+  --red: #e0577a;
+  --green: #6bc78a;
+}
+
+*{ box-sizing: border-box; }
+html{ scroll-behavior: smooth; }
+
+body{
+  margin: 0;
+  background:
+    radial-gradient(1100px 500px at 50% -10%, rgba(139,127,217,0.16), transparent 60%),
+    var(--bg);
+  color: var(--cream);
+  font-family: 'Manrope', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap{
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+}
+
+/* ---------- Nav ---------- */
+.site-nav{
+  border-bottom: 1px solid var(--line);
+  background: rgba(21,12,30,0.7);
+  backdrop-filter: blur(6px);
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.site-nav-inner{
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.site-logo{
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  color: var(--cream);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.site-logo::before{
+  content: "";
+  width: 9px; height: 9px;
+  background: var(--amber);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--amber);
+  display: inline-block;
+}
+.site-links{
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+.site-links a{
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+  text-decoration: none;
+  padding: 8px 12px;
+  border-radius: 999px;
+  transition: all 0.15s ease;
+  border: 1px solid transparent;
+}
+.site-links a:hover{ color: var(--cream); }
+.site-links a.active{
+  color: var(--bg-alt);
+  background: var(--amber);
+  font-weight: 700;
+}
+
+/* ---------- Hero header block (per page) ---------- */
+.page-head{ padding: 44px 0 8px; }
+.eyebrow{
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.eyebrow::before{
+  content: "";
+  width: 8px; height: 8px;
+  background: var(--amber);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--amber);
+}
+h1{
+  font-size: clamp(28px, 5vw, 40px);
+  line-height: 1.15;
+  margin: 0 0 6px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}
+.subhead{
+  color: var(--muted);
+  font-size: 16px;
+  margin: 0 0 36px;
+  max-width: 52ch;
+}
+
+/* ---------- Scoreboard readout (shared by click/spacebar tests) ---------- */
+.scoreboard{ text-align: center; padding: 28px 16px 8px; position: relative; }
+.cps-readout{
+  font-family: 'Space Mono', monospace;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(64px, 18vw, 112px);
+  line-height: 1;
+  color: var(--cream);
+  text-shadow: 0 0 24px rgba(242,169,59,0.25);
+  letter-spacing: -0.02em;
+  transition: transform 0.06s ease;
+}
+.cps-readout.pulse{ transform: scale(1.04); color: var(--amber); }
+.cps-label{
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 4px;
+}
+.stat-row{
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin: 18px 0 30px;
+  font-family: 'Space Mono', monospace;
+  font-size: 13px;
+  color: var(--muted);
+}
+.stat-row b{ color: var(--cream); font-weight: 700; display: block; font-size: 18px; }
+
+/* ---------- Timer pills ---------- */
+.timer-select{ display: flex; justify-content: center; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+.pill{
+  font-family: 'Space Mono', monospace;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--muted);
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.pill:hover{ border-color: var(--violet); color: var(--cream); }
+.pill.active{ background: var(--violet); border-color: var(--violet); color: var(--bg-alt); font-weight: 700; }
+
+/* ---------- Click / key zone ---------- */
+.click-zone{
+  position: relative;
+  height: 260px;
+  background: linear-gradient(180deg, var(--surface), var(--surface-2));
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: hidden;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.click-zone:active{ transform: scale(0.995); }
+.click-zone .cta{
+  font-family: 'Space Mono', monospace;
+  font-size: 15px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--cream);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  pointer-events: none;
+  text-align: center;
+  padding: 0 20px;
+}
+.click-zone .cta .big{
+  font-family: 'Manrope', sans-serif;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: none;
+}
+.ripple{
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(242,169,59,0.55), rgba(242,169,59,0) 70%);
+  transform: translate(-50%, -50%) scale(0);
+  pointer-events: none;
+  width: 160px; height: 160px;
+  animation: ripple-anim 0.5s ease-out forwards;
+}
+@keyframes ripple-anim{ to{ transform: translate(-50%, -50%) scale(1.6); opacity: 0; } }
+
+/* ---------- Reaction test specific states ---------- */
+.click-zone.state-wait{ background: linear-gradient(180deg, #3a2333, #2e1c2a); }
+.click-zone.state-go{ background: linear-gradient(180deg, #1f4a36, #163a2b); }
+.click-zone.state-early{ background: linear-gradient(180deg, #4a1f2b, #3a1721); }
+
+/* ---------- Result card ---------- */
+.result{
+  margin-top: 28px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 26px;
+  text-align: center;
+  display: none;
+}
+.result.show{ display: block; animation: rise 0.35s ease; }
+@keyframes rise{ from{ opacity:0; transform: translateY(10px);} to{opacity:1; transform:translateY(0);} }
+.result .tier{
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 6px;
+}
+.result .final-cps{ font-family: 'Space Mono', monospace; font-weight: 700; font-size: 44px; }
+.meter{ height: 8px; border-radius: 999px; background: var(--surface-2); margin: 18px 0; overflow: hidden; }
+.meter-fill{
+  height: 100%;
+  background: linear-gradient(90deg, var(--amber-dim), var(--amber));
+  border-radius: 999px;
+  width: 0%;
+  transition: width 0.6s ease;
+}
+.retry{
+  font-family: 'Space Mono', monospace;
+  background: var(--amber);
+  color: var(--bg-alt);
+  border: none;
+  padding: 12px 26px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  margin-top: 6px;
+}
+.retry:hover{ background: var(--amber-dim); }
+
+/* ---------- Content / FAQ ---------- */
+.content{ margin-top: 64px; border-top: 1px solid var(--line); padding-top: 40px; }
+.content h2{ font-size: 20px; margin: 0 0 14px; }
+.content p{ color: var(--muted); line-height: 1.7; font-size: 15px; margin: 0 0 16px; }
+.faq-item{ border-top: 1px solid var(--line); padding: 16px 0; }
+.faq-item:last-child{ border-bottom: 1px solid var(--line); }
+.faq-item h3{ font-size: 15px; margin: 0 0 8px; color: var(--cream); }
+.faq-item p{ margin: 0; font-size: 14px; }
+
+footer{
+  text-align: center;
+  color: var(--muted);
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  margin-top: 48px;
+  opacity: 0.7;
+}
+
+/* ---------- Hub page: tool grid ---------- */
+.tool-grid{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 16px;
+  margin-top: 8px;
+}
+.tool-card{
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px;
+  text-decoration: none;
+  color: var(--cream);
+  display: block;
+  transition: all 0.18s ease;
+  position: relative;
+  overflow: hidden;
+}
+.tool-card:hover{ border-color: var(--violet); transform: translateY(-2px); }
+.tool-card .tag{
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 10px;
+  display: block;
+}
+.tool-card h3{ margin: 0 0 8px; font-size: 18px; }
+.tool-card p{ margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
+.tool-card .go{
+  font-family: 'Space Mono', monospace;
+  font-size: 12px;
+  color: var(--violet);
+  margin-top: 14px;
+  display: inline-block;
+}
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation: none !important; transition: none !important; }
+}
