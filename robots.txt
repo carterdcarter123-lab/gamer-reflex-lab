@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://carterdcarter123-lab.github.io/gamer-reflex-lab/sitemap.xml
