@@ -407,11 +407,11 @@ footer .tagline{ opacity: 0.7; margin-bottom: 10px; }
   border-radius: 50%;
   background: radial-gradient(circle at 35% 30%, #ffd98f, var(--amber) 60%, var(--amber-dim) 100%);
   box-shadow: 0 0 18px rgba(242,169,59,0.5);
-  transform: translate(-50%, -50%) scale(0);
-  animation: target-in 0.15s ease forwards;
+  transform: translate(-50%, -50%);
+  animation: target-in 0.15s ease;
   cursor: pointer;
 }
-@keyframes target-in{ to{ transform: translate(-50%, -50%) scale(1); } }
+@keyframes target-in{ from{ transform: translate(-50%, -50%) scale(0); } to{ transform: translate(-50%, -50%) scale(1); } }
 .aim-pop{
   position: absolute;
   border-radius: 50%;
