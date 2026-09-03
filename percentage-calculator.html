@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Percentage Calculator — Free Online Percentage Tool</title>
+<meta name="description" content="Free percentage calculator. Find what percent one number is of another, calculate a percentage of a value, or find percentage increase and decrease.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5681140072406573" crossorigin="anonymous"></script>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<style>
+  .calc-card{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 18px;
+  }
+  .calc-card h3{ margin: 0 0 14px; font-size: 16px; }
+  .calc-row{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-family: 'Manrope', sans-serif;
+    font-size: 15px;
+    color: var(--cream);
+  }
+  .calc-row input{
+    width: 100px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    color: var(--cream);
+    border-radius: 8px;
+    padding: 9px 10px;
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+  }
+  .calc-row input:focus{ outline: 2px solid var(--violet); }
+  .calc-answer{
+    margin-top: 14px;
+    font-family: 'Space Mono', monospace;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--amber);
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="site-logo">GAMER REFLEX LAB</a>
+    <div class="site-links">
+      <a href="click-speed-test.html">Click Speed</a>
+      <a href="spacebar-counter.html">Spacebar</a>
+      <a href="reaction-time-test.html">Reaction Time</a>
+      <a href="aim-trainer.html">Aim Trainer</a>
+      <a href="typing-speed-test.html">Typing Speed</a>
+      <a href="gpa-calculator.html">GPA Calculator</a>
+      <a href="percentage-calculator.html" class="active">Percentage</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="page-head">
+    <div class="eyebrow">Everyday Tools</div>
+    <h1>Percentage Calculator</h1>
+    <p class="subhead">Three common percentage calculations in one place — pick the one you need below.</p>
+  </div>
+
+  <div class="calc-card">
+    <h3>What is X% of Y?</h3>
+    <div class="calc-row">
+      What is <input type="number" id="p1a" value="20"> % of <input type="number" id="p1b" value="150"> ?
+    </div>
+    <div class="calc-answer" id="p1result">= 30</div>
+  </div>
+
+  <div class="calc-card">
+    <h3>X is what percent of Y?</h3>
+    <div class="calc-row">
+      <input type="number" id="p2a" value="30"> is what % of <input type="number" id="p2b" value="150"> ?
+    </div>
+    <div class="calc-answer" id="p2result">= 20%</div>
+  </div>
+
+  <div class="calc-card">
+    <h3>Percentage change from X to Y</h3>
+    <div class="calc-row">
+      From <input type="number" id="p3a" value="150"> to <input type="number" id="p3b" value="180"> ?
+    </div>
+    <div class="calc-answer" id="p3result">= +20%</div>
+  </div>
+
+  <div class="content">
+    <h2>How these calculations work</h2>
+    <p>"X% of Y" multiplies Y by X divided by 100. "X is what percent of Y" divides X by Y and multiplies by 100. Percentage change subtracts the starting value from the new value, divides by the starting value, then multiplies by 100 — a positive result means an increase, a negative result means a decrease.</p>
+
+    <div class="faq-item">
+      <h3>How do I calculate a percentage decrease?</h3>
+      <p>Use the third calculator above with your starting (larger) value first and your ending (smaller) value second. A negative result shows the percentage decrease.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can I use negative numbers?</h3>
+      <p>Yes, all three calculators accept negative numbers and will calculate accordingly.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What's the difference between percentage points and percent?</h3>
+      <p>A percentage point is the raw difference between two percentages (going from 20% to 25% is a 5 percentage point increase), while percent change measures that difference relative to the starting value (a 25% increase in this case). This tool calculates percent change, not percentage points.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="tagline">BUILT FOR PEOPLE WHO CLICK FAST</div>
+    <div class="footer-links">
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  function bind(ids, fn){
+    ids.forEach(id => document.getElementById(id).addEventListener('input', fn));
+    fn();
+  }
+
+  bind(['p1a','p1b'], () => {
+    const a = parseFloat(document.getElementById('p1a').value) || 0;
+    const b = parseFloat(document.getElementById('p1b').value) || 0;
+    document.getElementById('p1result').textContent = '= ' + ((a/100)*b).toFixed(2);
+  });
+
+  bind(['p2a','p2b'], () => {
+    const a = parseFloat(document.getElementById('p2a').value) || 0;
+    const b = parseFloat(document.getElementById('p2b').value) || 0;
+    const result = b !== 0 ? (a/b)*100 : 0;
+    document.getElementById('p2result').textContent = '= ' + result.toFixed(2) + '%';
+  });
+
+  bind(['p3a','p3b'], () => {
+    const a = parseFloat(document.getElementById('p3a').value) || 0;
+    const b = parseFloat(document.getElementById('p3b').value) || 0;
+    const result = a !== 0 ? ((b-a)/a)*100 : 0;
+    const sign = result >= 0 ? '+' : '';
+    document.getElementById('p3result').textContent = '= ' + sign + result.toFixed(2) + '%';
+  });
+})();
+</script>
+
+</body>
+</html>

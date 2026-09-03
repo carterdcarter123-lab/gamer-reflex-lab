@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BMI Calculator — Free Body Mass Index Calculator</title>
+<meta name="description" content="Free BMI calculator. Enter your height and weight in metric or imperial units to calculate your body mass index and category.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5681140072406573" crossorigin="anonymous"></script>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<style>
+  .unit-toggle{ display: flex; justify-content: center; gap: 8px; margin-bottom: 22px; }
+  .bmi-card{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 26px;
+  }
+  .bmi-fields{ display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+  .bmi-field{ text-align: left; }
+  .bmi-field label{
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .bmi-field input{
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    color: var(--cream);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 15px;
+    width: 100px;
+  }
+  .bmi-result{ text-align: center; margin-top: 26px; }
+  .bmi-result .value{ font-family: 'Space Mono', monospace; font-weight: 700; font-size: 48px; color: var(--amber); }
+  .bmi-result .category{ font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="site-logo">GAMER REFLEX LAB</a>
+    <div class="site-links">
+      <a href="click-speed-test.html">Click Speed</a>
+      <a href="spacebar-counter.html">Spacebar</a>
+      <a href="reaction-time-test.html">Reaction Time</a>
+      <a href="aim-trainer.html">Aim Trainer</a>
+      <a href="typing-speed-test.html">Typing Speed</a>
+      <a href="gpa-calculator.html">GPA Calculator</a>
+      <a href="percentage-calculator.html">Percentage</a>
+      <a href="age-calculator.html">Age Calculator</a>
+      <a href="bmi-calculator.html" class="active">BMI Calculator</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="page-head">
+    <div class="eyebrow">Everyday Tools</div>
+    <h1>BMI Calculator</h1>
+    <p class="subhead">Enter your height and weight to calculate your body mass index.</p>
+  </div>
+
+  <div class="timer-select unit-toggle" id="unitSelect">
+    <button class="pill active" data-unit="metric">Metric (cm / kg)</button>
+    <button class="pill" data-unit="imperial">Imperial (ft-in / lb)</button>
+  </div>
+
+  <div class="bmi-card">
+    <div class="bmi-fields" id="metricFields">
+      <div class="bmi-field"><label>Height (cm)</label><input type="number" id="heightCm" value="170"></div>
+      <div class="bmi-field"><label>Weight (kg)</label><input type="number" id="weightKg" value="65"></div>
+    </div>
+    <div class="bmi-fields" id="imperialFields" style="display:none;">
+      <div class="bmi-field"><label>Height (ft)</label><input type="number" id="heightFt" value="5"></div>
+      <div class="bmi-field"><label>Height (in)</label><input type="number" id="heightIn" value="7"></div>
+      <div class="bmi-field"><label>Weight (lb)</label><input type="number" id="weightLb" value="143"></div>
+    </div>
+
+    <div class="bmi-result">
+      <div class="value" id="bmiValue">22.5</div>
+      <div class="category" id="bmiCategory">Normal weight</div>
+    </div>
+  </div>
+
+  <div class="content">
+    <h2>How BMI is calculated</h2>
+    <p>BMI is calculated as weight in kilograms divided by height in meters squared. It's a simple screening measure, not a full body composition assessment — it doesn't distinguish between muscle and fat, so athletes and very muscular people often score higher without carrying excess body fat.</p>
+
+    <div class="faq-item">
+      <h3>What are the BMI categories?</h3>
+      <p>Under 18.5 is considered underweight, 18.5–24.9 is normal weight, 25–29.9 is overweight, and 30 or above is considered obese, according to the standard World Health Organization ranges.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is BMI accurate for everyone?</h3>
+      <p>No. It's a general population screening tool and doesn't account for muscle mass, bone density, age, or sex, so it can be misleading for athletes, older adults, or pregnant women. It's a starting point, not a diagnosis.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can I switch between metric and imperial?</h3>
+      <p>Yes, use the toggle above the calculator to switch input units at any time.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="tagline">BUILT FOR PEOPLE WHO CLICK FAST</div>
+    <div class="footer-links">
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  const unitSelect = document.getElementById('unitSelect');
+  const metricFields = document.getElementById('metricFields');
+  const imperialFields = document.getElementById('imperialFields');
+  const bmiValue = document.getElementById('bmiValue');
+  const bmiCategory = document.getElementById('bmiCategory');
+  let unit = 'metric';
+
+  unitSelect.addEventListener('click', (e) => {
+    const btn = e.target.closest('.pill');
+    if(!btn) return;
+    unit = btn.dataset.unit;
+    [...unitSelect.children].forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    metricFields.style.display = unit === 'metric' ? 'flex' : 'none';
+    imperialFields.style.display = unit === 'imperial' ? 'flex' : 'none';
+    calculate();
+  });
+
+  function categoryFor(bmi){
+    if(bmi < 18.5) return 'Underweight';
+    if(bmi < 25) return 'Normal weight';
+    if(bmi < 30) return 'Overweight';
+    return 'Obese';
+  }
+
+  function calculate(){
+    let bmi;
+    if(unit === 'metric'){
+      const cm = parseFloat(document.getElementById('heightCm').value) || 0;
+      const kg = parseFloat(document.getElementById('weightKg').value) || 0;
+      const m = cm / 100;
+      bmi = m > 0 ? kg / (m*m) : 0;
+    } else {
+      const ft = parseFloat(document.getElementById('heightFt').value) || 0;
+      const inch = parseFloat(document.getElementById('heightIn').value) || 0;
+      const lb = parseFloat(document.getElementById('weightLb').value) || 0;
+      const totalIn = ft * 12 + inch;
+      bmi = totalIn > 0 ? (lb / (totalIn*totalIn)) * 703 : 0;
+    }
+    bmiValue.textContent = bmi.toFixed(1);
+    bmiCategory.textContent = categoryFor(bmi);
+  }
+
+  document.querySelectorAll('.bmi-field input').forEach(el => el.addEventListener('input', calculate));
+  calculate();
+})();
+</script>
+
+</body>
+</html>

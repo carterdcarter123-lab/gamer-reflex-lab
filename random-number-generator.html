@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Number Generator — Free Online Tool</title>
+<meta name="description" content="Free random number generator. Set a minimum, maximum, and how many numbers you need, with or without duplicates.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5681140072406573" crossorigin="anonymous"></script>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<style>
+  .rng-card{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 26px;
+  }
+  .rng-fields{ display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; margin-bottom: 18px; }
+  .rng-field label{
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .rng-field input{
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    color: var(--cream);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 15px;
+    width: 90px;
+  }
+  .rng-checkbox{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    justify-content: center;
+    margin-bottom: 18px;
+  }
+  .rng-generate{
+    display: block;
+    margin: 0 auto;
+    font-family: 'Space Mono', monospace;
+    background: var(--amber);
+    color: var(--bg-alt);
+    border: none;
+    padding: 12px 28px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .rng-generate:hover{ background: var(--amber-dim); }
+  .rng-output{
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+  .rng-number{
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 20px;
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    color: var(--amber);
+    padding: 10px 16px;
+    border-radius: 10px;
+  }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="site-logo">GAMER REFLEX LAB</a>
+    <div class="site-links">
+      <a href="click-speed-test.html">Click Speed</a>
+      <a href="spacebar-counter.html">Spacebar</a>
+      <a href="reaction-time-test.html">Reaction Time</a>
+      <a href="aim-trainer.html">Aim Trainer</a>
+      <a href="typing-speed-test.html">Typing Speed</a>
+      <a href="gpa-calculator.html">GPA Calculator</a>
+      <a href="percentage-calculator.html">Percentage</a>
+      <a href="age-calculator.html">Age Calculator</a>
+      <a href="bmi-calculator.html">BMI Calculator</a>
+      <a href="random-number-generator.html" class="active">Random Number</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="page-head">
+    <div class="eyebrow">Everyday Tools</div>
+    <h1>Random Number Generator</h1>
+    <p class="subhead">Set your range and how many numbers you need, then generate.</p>
+  </div>
+
+  <div class="rng-card">
+    <div class="rng-fields">
+      <div class="rng-field"><label>Min</label><input type="number" id="rngMin" value="1"></div>
+      <div class="rng-field"><label>Max</label><input type="number" id="rngMax" value="100"></div>
+      <div class="rng-field"><label>How many</label><input type="number" id="rngCount" value="1" min="1" max="100"></div>
+    </div>
+    <div class="rng-checkbox">
+      <input type="checkbox" id="rngUnique">
+      <label for="rngUnique">No duplicate numbers</label>
+    </div>
+    <button class="rng-generate" id="rngGenerate">Generate</button>
+    <div class="rng-output" id="rngOutput"></div>
+  </div>
+
+  <div class="content">
+    <h2>How this generator works</h2>
+    <p>Numbers are generated using your browser's built-in randomization, which is suitable for games, giveaways, classroom activities, and everyday decision-making. It is not intended for cryptographic or security-related purposes.</p>
+
+    <div class="faq-item">
+      <h3>What happens if I ask for more unique numbers than the range allows?</h3>
+      <p>If your range is smaller than the number of unique values requested (for example, asking for 10 unique numbers between 1 and 5), the generator will return as many unique values as the range actually allows.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can I generate negative numbers?</h3>
+      <p>Yes, set the minimum value to a negative number and the generator will work normally across that range.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is this good for raffles or giveaways?</h3>
+      <p>Yes, this is a common use case — set your range to match your ticket or entry numbers and use the "no duplicates" option to draw multiple unique winners at once.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="tagline">BUILT FOR PEOPLE WHO CLICK FAST</div>
+    <div class="footer-links">
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  const minEl = document.getElementById('rngMin');
+  const maxEl = document.getElementById('rngMax');
+  const countEl = document.getElementById('rngCount');
+  const uniqueEl = document.getElementById('rngUnique');
+  const output = document.getElementById('rngOutput');
+  const generateBtn = document.getElementById('rngGenerate');
+
+  function generate(){
+    let min = parseInt(minEl.value, 10);
+    let max = parseInt(maxEl.value, 10);
+    let count = Math.max(1, Math.min(100, parseInt(countEl.value, 10) || 1));
+    if(min > max){ [min, max] = [max, min]; }
+
+    const results = [];
+    if(uniqueEl.checked){
+      const pool = [];
+      for(let i = min; i <= max; i++) pool.push(i);
+      for(let i = pool.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i+1));
+        [pool[i], pool[j]] = [pool[j], pool[i]];
+      }
+      results.push(...pool.slice(0, count));
+    } else {
+      for(let i = 0; i < count; i++){
+        results.push(Math.floor(Math.random() * (max - min + 1)) + min);
+      }
+    }
+
+    output.innerHTML = results.map(n => '<div class="rng-number">' + n + '</div>').join('');
+  }
+
+  generateBtn.addEventListener('click', generate);
+  generate();
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Age Calculator — Calculate Your Exact Age</title>
+<meta name="description" content="Free age calculator. Enter your birth date to find your exact age in years, months, and days, plus how long until your next birthday.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5681140072406573" crossorigin="anonymous"></script>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<style>
+  .date-card{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 26px;
+    text-align: center;
+  }
+  .date-card input[type="date"]{
+    background: var(--surface-2);
+    border: 1px solid var(--line);
+    color: var(--cream);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-family: 'Space Mono', monospace;
+    font-size: 16px;
+    color-scheme: dark;
+  }
+  .age-breakdown{
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+  }
+  .age-breakdown div{ text-align: center; }
+  .age-breakdown .num{
+    font-family: 'Space Mono', monospace;
+    font-weight: 700;
+    font-size: 40px;
+    color: var(--amber);
+  }
+  .age-breakdown .lbl{
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .age-extra{
+    margin-top: 20px;
+    font-family: 'Space Mono', monospace;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .age-extra b{ color: var(--cream); }
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <div class="site-nav-inner">
+    <a href="index.html" class="site-logo">GAMER REFLEX LAB</a>
+    <div class="site-links">
+      <a href="click-speed-test.html">Click Speed</a>
+      <a href="spacebar-counter.html">Spacebar</a>
+      <a href="reaction-time-test.html">Reaction Time</a>
+      <a href="aim-trainer.html">Aim Trainer</a>
+      <a href="typing-speed-test.html">Typing Speed</a>
+      <a href="gpa-calculator.html">GPA Calculator</a>
+      <a href="percentage-calculator.html">Percentage</a>
+      <a href="age-calculator.html" class="active">Age Calculator</a>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+
+  <div class="page-head">
+    <div class="eyebrow">Everyday Tools</div>
+    <h1>Age Calculator</h1>
+    <p class="subhead">Enter your birth date to find your exact age, down to the day.</p>
+  </div>
+
+  <div class="date-card">
+    <input type="date" id="birthDate">
+    <div class="age-breakdown">
+      <div><div class="num" id="years">0</div><div class="lbl">Years</div></div>
+      <div><div class="num" id="months">0</div><div class="lbl">Months</div></div>
+      <div><div class="num" id="days">0</div><div class="lbl">Days</div></div>
+    </div>
+    <div class="age-extra">
+      Total days lived: <b id="totalDays">—</b> · Next birthday in <b id="nextBday">—</b> days
+    </div>
+  </div>
+
+  <div class="content">
+    <h2>How age is calculated here</h2>
+    <p>Your age in years, months, and days is calculated by comparing your birth date to today's date and accounting for varying month lengths and leap years, not just a simple day count divided evenly.</p>
+
+    <div class="faq-item">
+      <h3>Why do months and days sometimes look uneven?</h3>
+      <p>Because months have different numbers of days, the months and days shown represent the actual calendar distance from your last birthday, not a fixed 30-day approximation.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does this account for leap years?</h3>
+      <p>Yes, the total day count factors in leap years automatically since it's based on real calendar dates rather than an estimate.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is my birth date stored anywhere?</h3>
+      <p>No, the calculation happens entirely in your browser and nothing is saved or sent anywhere.</p>
+    </div>
+  </div>
+
+  <footer>
+    <div class="tagline">BUILT FOR PEOPLE WHO CLICK FAST</div>
+    <div class="footer-links">
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="privacy.html">Privacy Policy</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  const input = document.getElementById('birthDate');
+  const yearsEl = document.getElementById('years');
+  const monthsEl = document.getElementById('months');
+  const daysEl = document.getElementById('days');
+  const totalDaysEl = document.getElementById('totalDays');
+  const nextBdayEl = document.getElementById('nextBday');
+
+  function calculate(){
+    if(!input.value) return;
+    const birth = new Date(input.value + 'T00:00:00');
+    const today = new Date();
+    today.setHours(0,0,0,0);
+
+    if(birth > today){
+      yearsEl.textContent = '0'; monthsEl.textContent = '0'; daysEl.textContent = '0';
+      totalDaysEl.textContent = '—'; nextBdayEl.textContent = '—';
+      return;
+    }
+
+    let years = today.getFullYear() - birth.getFullYear();
+    let months = today.getMonth() - birth.getMonth();
+    let days = today.getDate() - birth.getDate();
+
+    if(days < 0){
+      months--;
+      const prevMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+      days += prevMonth.getDate();
+    }
+    if(months < 0){
+      years--;
+      months += 12;
+    }
+
+    yearsEl.textContent = years;
+    monthsEl.textContent = months;
+    daysEl.textContent = days;
+
+    const totalDays = Math.floor((today - birth) / 86400000);
+    totalDaysEl.textContent = totalDays.toLocaleString();
+
+    let nextBday = new Date(today.getFullYear(), birth.getMonth(), birth.getDate());
+    if(nextBday < today){ nextBday.setFullYear(nextBday.getFullYear() + 1); }
+    const daysUntil = Math.round((nextBday - today) / 86400000);
+    nextBdayEl.textContent = daysUntil;
+  }
+
+  input.addEventListener('input', calculate);
+
+  const d = new Date();
+  d.setFullYear(d.getFullYear() - 20);
+  input.value = d.toISOString().slice(0,10);
+  calculate();
+})();
+</script>
+
+</body>
+</html>
