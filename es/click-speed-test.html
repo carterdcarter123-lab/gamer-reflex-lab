@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Test de Velocidad de Clic — Mide tus Clics Por Segundo (CPS)</title>
-<meta name="description" content="Test de velocidad de clic gratis. Descubre cuántos clics por segundo (CPS) puedes hacer en 5, 10, 30 o 60 segundos. Funciona con mouse y pantalla táctil.">
+<title>Click Speed Test — Measure Your CPS (Clicks Per Second)</title>
+<meta name="description" content="Free click speed test. Find out how many clicks per second (CPS) you can do in 5, 10, 30 or 60 seconds. No download, works on mouse and touch.">
 <link rel="alternate" hreflang="en" href="https://reflexdrill.com/click-speed-test.html">
 <link rel="alternate" hreflang="es" href="https://reflexdrill.com/es/click-speed-test.html">
 <link rel="alternate" hreflang="x-default" href="https://reflexdrill.com/click-speed-test.html">
@@ -12,40 +12,28 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5681140072406573" crossorigin="anonymous"></script>
-<link rel="icon" href="../favicon.svg" type="image/svg+xml">
-<link rel="stylesheet" href="../style.css">
-<style>
-  .lang-switch{
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    color: var(--muted);
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
-  .lang-switch a{ color: var(--muted); text-decoration: none; }
-  .lang-switch a.active{ color: var(--amber); font-weight: 700; }
-</style>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <nav class="site-nav">
   <div class="site-nav-inner">
-    <a href="../index.html" class="site-logo">GAMER REFLEX LAB</a>
+    <a href="index.html" class="site-logo">GAMER REFLEX LAB</a>
     <div class="site-links">
-      <a href="../click-speed-test.html">Click Speed</a>
-      <a href="../spacebar-counter.html">Spacebar</a>
-      <a href="../reaction-time-test.html">Reaction Time</a>
-      <a href="../aim-trainer.html">Aim Trainer</a>
-      <a href="../typing-speed-test.html">Typing Speed</a>
-      <a href="../gpa-calculator.html">GPA Calculator</a>
-      <a href="../percentage-calculator.html">Percentage</a>
-      <a href="../age-calculator.html">Age Calculator</a>
-      <a href="../bmi-calculator.html">BMI Calculator</a>
-      <a href="../random-number-generator.html">Random Number</a>
+      <a href="click-speed-test.html" class="active">Click Speed</a>
+      <a href="spacebar-counter.html">Spacebar</a>
+      <a href="reaction-time-test.html">Reaction Time</a>
+      <a href="aim-trainer.html">Aim Trainer</a>
+      <a href="typing-speed-test.html">Typing Speed</a>
+      <a href="gpa-calculator.html">GPA Calculator</a>
+      <a href="percentage-calculator.html">Percentage</a>
+      <a href="age-calculator.html">Age Calculator</a>
+      <a href="bmi-calculator.html">BMI Calculator</a>
+      <a href="random-number-generator.html">Random Number</a>
     </div>
-    <div class="lang-switch">
-      <a href="../click-speed-test.html">EN</a> · <a href="click-speed-test.html" class="active">ES</a>
+    <div class="lang-switch" style="font-family:'Space Mono',monospace; font-size:11px; color:var(--muted); display:flex; gap:8px; align-items:center;">
+      <a href="click-speed-test.html" style="color:var(--amber); font-weight:700; text-decoration:none;">EN</a> · <a href="es/click-speed-test.html" style="color:var(--muted); text-decoration:none;">ES</a>
     </div>
   </div>
 </nav>
@@ -53,19 +41,19 @@
 <div class="wrap">
 
   <div class="page-head">
-    <div class="eyebrow">Test de Mouse</div>
-    <h1>Test de Velocidad de Clic</h1>
-    <p class="subhead">Descubre cuántos clics por segundo (CPS) puedes hacer. Elige un tiempo, haz clic lo más rápido que puedas dentro del recuadro y obtén tu resultado.</p>
+    <div class="eyebrow">Mouse Test</div>
+    <h1>Click Speed Test</h1>
+    <p class="subhead">Find out how many clicks per second (CPS) you can hit. Pick a time, click as fast as you can inside the box, and get your score.</p>
   </div>
 
   <div class="scoreboard">
     <div class="cps-readout" id="cpsReadout">0.0</div>
-    <div class="cps-label">Clics por segundo</div>
+    <div class="cps-label">Clicks per second</div>
   </div>
 
   <div class="stat-row">
-    <div>Clics<b id="clickCount">0</b></div>
-    <div>Tiempo restante<b id="timeLeft">5.0s</b></div>
+    <div>Clicks<b id="clickCount">0</b></div>
+    <div>Time left<b id="timeLeft">5.0s</b></div>
   </div>
 
   <div class="timer-select" id="timerSelect">
@@ -75,48 +63,60 @@
     <button class="pill" data-time="60">60s</button>
   </div>
 
-  <div class="click-zone" id="clickZone" role="button" tabindex="0" aria-label="Zona de clic, haz clic lo más rápido posible para comenzar">
+  <div class="click-zone" id="clickZone" role="button" tabindex="0" aria-label="Click zone, click as fast as you can to start the test">
     <div class="cta">
-      <span class="big">Haz clic para empezar</span>
-      <span>Toca o haz clic lo más rápido que puedas</span>
+      <span class="big">Click to start</span>
+      <span>Tap or click as fast as you can</span>
     </div>
   </div>
 
   <div class="result" id="result">
-    <div class="tier" id="tier">Resultado</div>
+    <div class="tier" id="tier">Result</div>
     <div class="final-cps" id="finalCps">0.0 CPS</div>
     <div class="meter"><div class="meter-fill" id="meterFill"></div></div>
-    <button class="retry" id="retryBtn">Intentar de nuevo</button>
+    <button class="retry" id="retryBtn">Try again</button>
   </div>
 
   <div class="content">
-    <h2>¿Qué se considera un buen CPS?</h2>
-    <p>La mayoría de las personas hacen clic entre 4 y 6 veces por segundo en un test estándar. Cualquier valor por encima de 7 CPS se considera rápido, y los resultados por encima de 10 CPS suelen venir de técnicas como el jitter clicking o el butterfly clicking, en lugar de un clic normal con un solo dedo.</p>
+    <h2>What counts as a good CPS?</h2>
+    <p>Most people click between 4 and 6 times per second on a standard test. Anything above 7 CPS is considered fast, and scores past 10 CPS usually come from techniques like jitter clicking or butterfly clicking rather than a normal single-finger click.</p>
 
     <div class="faq-item">
-      <h3>¿Para qué sirve un test de velocidad de clic?</h3>
-      <p>Se usa principalmente para comprobar la velocidad de reacción y el rendimiento del mouse en juegos como Minecraft PvP, shooters y juegos de ritmo, aunque también sirve para verificar rápidamente si los clics de un mouse se están registrando correctamente.</p>
+      <h3>What is a click speed test used for?</h3>
+      <p>It's most often used by gamers to check reaction speed and mouse performance for games like Minecraft PvP, first-person shooters, and rhythm games, but it also works as a quick way to test whether a mouse's clicks are being registered properly.</p>
     </div>
     <div class="faq-item">
-      <h3>¿Cómo se calcula el CPS?</h3>
-      <p>CPS significa clics por segundo. Se calcula dividiendo el número total de clics entre el tiempo total del test, así que 30 clics en un test de 5 segundos equivalen a 6 CPS.</p>
+      <h3>How is CPS calculated?</h3>
+      <p>CPS stands for clicks per second. It's calculated by dividing your total number of clicks by the total time of the test, so 30 clicks in a 5 second test equals 6 CPS.</p>
     </div>
     <div class="faq-item">
-      <h3>¿Qué son el jitter clicking y el butterfly clicking?</h3>
-      <p>Son técnicas que algunos jugadores usan para aumentar su puntuación más allá del clic normal. El jitter clicking usa la tensión del brazo para vibrar el botón del mouse rápidamente, mientras que el butterfly clicking alterna dos dedos sobre el mismo botón.</p>
+      <h3>Why does my score change between 5 second and 60 second tests?</h3>
+      <p>Short tests tend to produce higher CPS because it's easier to click quickly in a short burst than to sustain that speed. Longer tests are a better measure of consistent clicking speed over time.</p>
     </div>
     <div class="faq-item">
-      <h3>¿Funciona en el móvil?</h3>
-      <p>Sí, el test responde tanto a toques como a clics de mouse, así que puedes usarlo también en la pantalla de un teléfono o tablet.</p>
+      <h3>Does this work on mobile?</h3>
+      <p>Yes, the test responds to taps as well as mouse clicks, so you can run it on a phone or tablet screen too.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What's the difference between CPS and clicks per minute (CPM)?</h3>
+      <p>Clicks per minute is simply your CPS multiplied by 60. If you click at 6 CPS, that works out to 360 clicks per minute — the two numbers measure the exact same thing on different timescales.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What are jitter clicking and butterfly clicking?</h3>
+      <p>These are techniques some players use to boost their score beyond normal single-finger clicking. Jitter clicking uses arm tension to vibrate the mouse button rapidly, while butterfly clicking alternates two fingers on the same button. Both can push scores past 10-12 CPS, well above a typical single-click rate.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why do click speed tests matter for Minecraft PvP?</h3>
+      <p>In older Minecraft combat versions (1.8 and similar), clicking faster lets you land more hits in a fight, so many PvP players use a click speed test to check their baseline before practicing techniques to improve it.</p>
     </div>
   </div>
 
   <footer>
-    <div class="tagline">HECHO PARA GENTE QUE HACE CLIC RÁPIDO</div>
+    <div class="tagline">BUILT FOR PEOPLE WHO CLICK FAST</div>
     <div class="footer-links">
-      <a href="../about.html">About</a>
-      <a href="../contact.html">Contact</a>
-      <a href="../privacy.html">Privacy Policy</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="privacy.html">Privacy Policy</a>
     </div>
   </footer>
 
@@ -164,7 +164,7 @@
     clickCountEl.textContent = '0';
     timeLeftEl.textContent = duration.toFixed(1) + 's';
     resultEl.classList.remove('show');
-    clickZone.querySelector('.cta').innerHTML = '<span class="big">Haz clic para empezar</span><span>Toca o haz clic lo más rápido que puedas</span>';
+    clickZone.querySelector('.cta').innerHTML = '<span class="big">Click to start</span><span>Tap or click as fast as you can</span>';
   }
 
   function spawnRipple(x, y){
@@ -198,7 +198,7 @@
   function startTest(){
     running = true;
     startTime = Date.now();
-    clickZone.querySelector('.cta').innerHTML = '<span class="big">¡Ahora!</span><span>Sigue haciendo clic</span>';
+    clickZone.querySelector('.cta').innerHTML = '<span class="big">Go!</span><span>Keep clicking</span>';
     timerInterval = setInterval(() => {
       const elapsed = (Date.now() - startTime) / 1000;
       const remaining = Math.max(0, duration - elapsed);
@@ -214,16 +214,16 @@
     timeLeftEl.textContent = '0.0s';
     cpsReadout.textContent = finalCps.toFixed(1);
     showResult(finalCps);
-    clickZone.querySelector('.cta').innerHTML = '<span class="big">¡Tiempo!</span><span>Pulsa intentar de nuevo</span>';
+    clickZone.querySelector('.cta').innerHTML = '<span class="big">Time!</span><span>Press try again to retry</span>';
   }
 
   function showResult(cps){
     let tier, pct;
-    if(cps < 4){ tier = 'Clicador casual'; pct = 20; }
-    else if(cps < 6){ tier = 'Clicador hábil'; pct = 45; }
-    else if(cps < 8){ tier = 'Clicador pro'; pct = 70; }
-    else if(cps < 10){ tier = 'Clicador de élite'; pct = 90; }
-    else { tier = 'Clicador legendario'; pct = 100; }
+    if(cps < 4){ tier = 'Casual clicker'; pct = 20; }
+    else if(cps < 6){ tier = 'Skilled clicker'; pct = 45; }
+    else if(cps < 8){ tier = 'Pro clicker'; pct = 70; }
+    else if(cps < 10){ tier = 'Elite clicker'; pct = 90; }
+    else { tier = 'Legendary clicker'; pct = 100; }
 
     tierEl.textContent = tier;
     finalCpsEl.textContent = cps.toFixed(1) + ' CPS';
