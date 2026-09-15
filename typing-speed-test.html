@@ -5,19 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Typing Speed Test — Free WPM Test</title>
 <meta name="description" content="Free typing speed test. Measure your words per minute (WPM) and accuracy. No sign-up needed.">
+<link rel="canonical" href="https://reflexdrill.com/typing-speed-test.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5681140072406573" crossorigin="anonymous"></script>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="canonical" href="https://reflexdrill.com/typing-speed-test.html">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <nav class="site-nav">
   <div class="site-nav-inner">
-    <a href="index.html" class="site-logo">GAMER REFLEX LAB</a>
+    <a href="index.html" class="site-logo">Reflex Drill</a>
     <div class="site-links">
       <a href="click-speed-test.html">Click Speed</a>
       <a href="spacebar-counter.html">Spacebar</a>
@@ -36,20 +36,19 @@
 <div class="wrap">
 
   <div class="page-head">
-    <div class="eyebrow">Typing Test</div>
-    <h1>Typing Speed Test</h1>
+    <h1>Typing speed test</h1>
     <p class="subhead">Type the passage below as fast and accurately as you can. Your timer starts on your first keystroke.</p>
   </div>
 
-  <div class="stat-row">
+  <div class="stat-row" style="margin-top:0; border-top:none; padding-top:0;">
     <div>WPM<b id="wpmStat">0</b></div>
     <div>Accuracy<b id="accStat">100%</b></div>
     <div>Time left<b id="timeLeft">30.0s</b></div>
   </div>
 
-  <div class="timer-select" id="timerSelect">
+  <div class="timer-select" id="timerSelect" style="margin-top:14px;">
     <button class="pill" data-time="15">15s</button>
-    <button class="pill" data-time="30">30s</button>
+    <button class="pill active" data-time="30">30s</button>
     <button class="pill" data-time="60">60s</button>
   </div>
 
@@ -62,8 +61,7 @@
   <div class="result" id="result">
     <div class="tier" id="tier">Result</div>
     <div class="final-cps" id="finalCps">0 WPM</div>
-    <div class="meter"><div class="meter-fill" id="meterFill"></div></div>
-    <button class="retry" id="retryBtn">Try again</button>
+    <button class="retry" id="retryBtn">Run again</button>
   </div>
 
   <div class="content">
@@ -93,7 +91,7 @@
   </div>
 
   <footer>
-    <div class="tagline">BUILT FOR PEOPLE WHO CLICK FAST</div>
+    <div class="tagline">Reflex Drill</div>
     <div class="footer-links">
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
@@ -123,16 +121,9 @@
   const resultEl = document.getElementById('result');
   const tierEl = document.getElementById('tier');
   const finalCpsEl = document.getElementById('finalCps');
-  const meterFill = document.getElementById('meterFill');
   const retryBtn = document.getElementById('retryBtn');
 
-  let duration = 30;
-  let passage = '';
-  let startTime = null;
-  let timerInterval = null;
-  let running = false;
-  let correctChars = 0;
-  let typedChars = 0;
+  let duration = 30, passage = '', startTime = null, timerInterval = null, running = false, correctChars = 0, typedChars = 0;
 
   function setDuration(sec, btn){
     duration = sec;
@@ -146,38 +137,27 @@
     setDuration(Number(btn.dataset.time), btn);
   });
 
-  function pickPassage(){
-    passage = passages[Math.floor(Math.random() * passages.length)];
-  }
+  function pickPassage(){ passage = passages[Math.floor(Math.random() * passages.length)]; }
 
   function renderPassage(typedValue){
     let html = '';
     for(let i = 0; i < passage.length; i++){
       const ch = passage[i];
       if(i < typedValue.length){
-        html += typedValue[i] === ch
-          ? '<span class="correct">' + escapeHtml(ch) + '</span>'
-          : '<span class="incorrect">' + escapeHtml(ch) + '</span>';
+        html += typedValue[i] === ch ? '<span class="correct">'+escapeHtml(ch)+'</span>' : '<span class="incorrect">'+escapeHtml(ch)+'</span>';
       } else if(i === typedValue.length){
-        html += '<span class="current">' + escapeHtml(ch) + '</span>';
+        html += '<span class="current">'+escapeHtml(ch)+'</span>';
       } else {
-        html += '<span>' + escapeHtml(ch) + '</span>';
+        html += '<span>'+escapeHtml(ch)+'</span>';
       }
     }
     passageEl.innerHTML = html;
   }
 
-  function escapeHtml(ch){
-    if(ch === '&') return '&amp;';
-    if(ch === '<') return '&lt;';
-    if(ch === '>') return '&gt;';
-    return ch;
-  }
+  function escapeHtml(ch){ if(ch==='&') return '&amp;'; if(ch==='<') return '&lt;'; if(ch==='>') return '&gt;'; return ch; }
 
   function resetState(){
-    running = false;
-    correctChars = 0;
-    typedChars = 0;
+    running = false; correctChars = 0; typedChars = 0;
     clearInterval(timerInterval);
     pickPassage();
     renderPassage('');
@@ -192,32 +172,20 @@
 
   catcher.addEventListener('input', () => {
     const value = catcher.value;
-
     if(!running){
-      running = true;
-      startTime = Date.now();
+      running = true; startTime = Date.now();
       timerInterval = setInterval(() => {
-        const elapsed = (Date.now() - startTime) / 1000;
-        const remaining = Math.max(0, duration - elapsed);
+        const remaining = Math.max(0, duration - (Date.now()-startTime)/1000);
         timeLeftEl.textContent = remaining.toFixed(1) + 's';
         if(remaining <= 0){ endTest(); }
       }, 50);
     }
-
     if(!running) return;
-
-    typedChars = value.length;
-    correctChars = 0;
-    for(let i = 0; i < value.length; i++){
-      if(value[i] === passage[i]) correctChars++;
-    }
-
+    typedChars = value.length; correctChars = 0;
+    for(let i = 0; i < value.length; i++){ if(value[i] === passage[i]) correctChars++; }
     renderPassage(value);
     updateLiveStats();
-
-    if(value.length >= passage.length){
-      endTest();
-    }
+    if(value.length >= passage.length){ endTest(); }
   });
 
   function updateLiveStats(){
@@ -229,8 +197,7 @@
   }
 
   function endTest(){
-    clearInterval(timerInterval);
-    running = false;
+    clearInterval(timerInterval); running = false;
     catcher.blur();
     timeLeftEl.textContent = '0.0s';
     updateLiveStats();
@@ -240,22 +207,18 @@
   function showResult(){
     const wpm = Number(wpmStat.textContent);
     const acc = Number(accStat.textContent.replace('%',''));
-    let tier, pct;
-    if(wpm < 30){ tier = 'Casual typer'; pct = 20; }
-    else if(wpm < 50){ tier = 'Skilled typer'; pct = 45; }
-    else if(wpm < 70){ tier = 'Fast typer'; pct = 70; }
-    else if(wpm < 90){ tier = 'Elite typer'; pct = 90; }
-    else { tier = 'Legendary typer'; pct = 100; }
-
+    let tier;
+    if(wpm < 30) tier = 'Casual typer';
+    else if(wpm < 50) tier = 'Skilled typer';
+    else if(wpm < 70) tier = 'Fast typer';
+    else if(wpm < 90) tier = 'Elite typer';
+    else tier = 'Legendary typer';
     tierEl.textContent = tier;
     finalCpsEl.textContent = wpm + ' WPM · ' + acc + '% accuracy';
-    meterFill.style.width = '0%';
-    requestAnimationFrame(() => { meterFill.style.width = pct + '%'; });
     resultEl.classList.add('show');
   }
 
   retryBtn.addEventListener('click', resetState);
-
   setDuration(30, timerSelect.children[1]);
 })();
 </script>

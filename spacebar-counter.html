@@ -5,19 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spacebar Counter — Test Your Spacebar Speed</title>
 <meta name="description" content="Free spacebar speed test. Find out how many times you can press the spacebar per second in 5, 10, 30 or 60 seconds.">
+<link rel="canonical" href="https://reflexdrill.com/spacebar-counter.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5681140072406573" crossorigin="anonymous"></script>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="canonical" href="https://reflexdrill.com/spacebar-counter.html">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <nav class="site-nav">
   <div class="site-nav-inner">
-    <a href="index.html" class="site-logo">GAMER REFLEX LAB</a>
+    <a href="index.html" class="site-logo">Reflex Drill</a>
     <div class="site-links">
       <a href="click-speed-test.html">Click Speed</a>
       <a href="spacebar-counter.html" class="active">Spacebar</a>
@@ -36,40 +36,35 @@
 <div class="wrap">
 
   <div class="page-head">
-    <div class="eyebrow">Keyboard Test</div>
-    <h1>Spacebar Counter</h1>
-    <p class="subhead">See how many times you can press the spacebar per second. Pick a time, click the box below to focus it, then start mashing.</p>
+    <h1>Spacebar counter</h1>
+    <p class="subhead">See how many times you can press the spacebar per second. Click the pad below to arm it, then start mashing.</p>
   </div>
 
-  <div class="scoreboard">
+  <div class="readout">
+    <span class="br1"></span><span class="br2"></span><span class="br3"></span><span class="br4"></span>
     <div class="cps-readout" id="cpsReadout">0.0</div>
-    <div class="cps-label">Presses per second</div>
-  </div>
-
-  <div class="stat-row">
-    <div>Presses<b id="clickCount">0</b></div>
-    <div>Time left<b id="timeLeft">5.0s</b></div>
+    <div class="cps-label">presses per second</div>
+    <div class="stat-row">
+      <div>Presses<b id="clickCount">0</b></div>
+      <div>Time left<b id="timeLeft">5.0s</b></div>
+    </div>
   </div>
 
   <div class="timer-select" id="timerSelect">
-    <button class="pill" data-time="5">5s</button>
+    <button class="pill active" data-time="5">5s</button>
     <button class="pill" data-time="10">10s</button>
     <button class="pill" data-time="30">30s</button>
     <button class="pill" data-time="60">60s</button>
   </div>
 
   <div class="click-zone" id="clickZone" role="button" tabindex="0" aria-label="Press zone, click here first then press spacebar as fast as you can">
-    <div class="cta">
-      <span class="big">Click here, then mash space</span>
-      <span>Needs a physical keyboard</span>
-    </div>
+    <div class="cta"><span class="big">Click here, then mash space</span><span>Needs a physical keyboard</span></div>
   </div>
 
   <div class="result" id="result">
     <div class="tier" id="tier">Result</div>
     <div class="final-cps" id="finalCps">0.0 PPS</div>
-    <div class="meter"><div class="meter-fill" id="meterFill"></div></div>
-    <button class="retry" id="retryBtn">Try again</button>
+    <button class="retry" id="retryBtn">Run again</button>
   </div>
 
   <div class="content">
@@ -99,7 +94,7 @@
   </div>
 
   <footer>
-    <div class="tagline">BUILT FOR PEOPLE WHO CLICK FAST</div>
+    <div class="tagline">Reflex Drill</div>
     <div class="footer-links">
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
@@ -119,15 +114,9 @@
   const resultEl = document.getElementById('result');
   const tierEl = document.getElementById('tier');
   const finalCpsEl = document.getElementById('finalCps');
-  const meterFill = document.getElementById('meterFill');
   const retryBtn = document.getElementById('retryBtn');
 
-  let duration = 5;
-  let presses = 0;
-  let startTime = null;
-  let timerInterval = null;
-  let running = false;
-  let armed = false; // zone has focus/is ready to accept spacebar
+  let duration = 5, presses = 0, startTime = null, timerInterval = null, running = false, armed = false;
 
   function setDuration(sec, btn){
     duration = sec;
@@ -135,20 +124,16 @@
     if(btn) btn.classList.add('active');
     resetState();
   }
-
   timerSelect.addEventListener('click', (e) => {
     const btn = e.target.closest('.pill');
     if(!btn) return;
     setDuration(Number(btn.dataset.time), btn);
   });
-  setDuration(5, timerSelect.children[0]);
 
   function resetState(){
-    running = false;
-    presses = 0;
+    running = false; presses = 0;
     clearInterval(timerInterval);
     cpsReadout.textContent = '0.0';
-    cpsReadout.classList.remove('pulse');
     clickCountEl.textContent = '0';
     timeLeftEl.textContent = duration.toFixed(1) + 's';
     resultEl.classList.remove('show');
@@ -158,10 +143,9 @@
   function spawnRipple(x, y){
     const r = document.createElement('div');
     r.className = 'ripple';
-    r.style.left = x + 'px';
-    r.style.top = y + 'px';
+    r.style.left = x + 'px'; r.style.top = y + 'px';
     clickZone.appendChild(r);
-    setTimeout(() => r.remove(), 500);
+    setTimeout(() => r.remove(), 400);
   }
 
   clickZone.addEventListener('click', () => {
@@ -176,62 +160,50 @@
     if(e.code !== 'Space' && e.key !== ' ') return;
     if(!armed) return;
     e.preventDefault();
-
     const rect = clickZone.getBoundingClientRect();
-    spawnRipple(rect.width / 2, rect.height / 2);
-
+    spawnRipple(rect.width/2, rect.height/2);
     if(!running){ startTest(); }
-
     if(running){
       presses++;
       clickCountEl.textContent = presses;
       const elapsed = (Date.now() - startTime) / 1000;
-      const livePps = elapsed > 0 ? presses / elapsed : 0;
-      cpsReadout.textContent = livePps.toFixed(1);
-      cpsReadout.classList.add('pulse');
-      setTimeout(() => cpsReadout.classList.remove('pulse'), 80);
+      cpsReadout.textContent = (elapsed > 0 ? presses / elapsed : 0).toFixed(1);
     }
   });
 
   function startTest(){
-    running = true;
-    startTime = Date.now();
-    clickZone.querySelector('.cta').innerHTML = '<span class="big">Go!</span><span>Keep mashing space</span>';
+    running = true; startTime = Date.now();
+    clickZone.querySelector('.cta').innerHTML = '<span class="big">Go</span><span>Keep mashing space</span>';
     timerInterval = setInterval(() => {
-      const elapsed = (Date.now() - startTime) / 1000;
-      const remaining = Math.max(0, duration - elapsed);
+      const remaining = Math.max(0, duration - (Date.now()-startTime)/1000);
       timeLeftEl.textContent = remaining.toFixed(1) + 's';
       if(remaining <= 0){ endTest(); }
     }, 50);
   }
 
   function endTest(){
-    clearInterval(timerInterval);
-    running = false;
-    armed = false;
+    clearInterval(timerInterval); running = false; armed = false;
     const finalPps = presses / duration;
     timeLeftEl.textContent = '0.0s';
     cpsReadout.textContent = finalPps.toFixed(1);
     showResult(finalPps);
-    clickZone.querySelector('.cta').innerHTML = '<span class="big">Time!</span><span>Press try again to retry</span>';
+    clickZone.querySelector('.cta').innerHTML = '<span class="big">Time</span><span>Run again to retry</span>';
   }
 
   function showResult(pps){
-    let tier, pct;
-    if(pps < 4){ tier = 'Casual masher'; pct = 20; }
-    else if(pps < 6){ tier = 'Skilled masher'; pct = 45; }
-    else if(pps < 8){ tier = 'Pro masher'; pct = 70; }
-    else if(pps < 10){ tier = 'Elite masher'; pct = 90; }
-    else { tier = 'Legendary masher'; pct = 100; }
-
+    let tier;
+    if(pps < 4) tier = 'Casual masher';
+    else if(pps < 6) tier = 'Skilled masher';
+    else if(pps < 8) tier = 'Pro masher';
+    else if(pps < 10) tier = 'Elite masher';
+    else tier = 'Legendary masher';
     tierEl.textContent = tier;
     finalCpsEl.textContent = pps.toFixed(1) + ' PPS';
-    meterFill.style.width = '0%';
-    requestAnimationFrame(() => { meterFill.style.width = pct + '%'; });
     resultEl.classList.add('show');
   }
 
   retryBtn.addEventListener('click', () => { resetState(); armed = false; });
+  setDuration(5, timerSelect.children[0]);
 })();
 </script>
 

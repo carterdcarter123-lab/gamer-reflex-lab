@@ -5,19 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aim Trainer — Free Online Click Accuracy Test</title>
 <meta name="description" content="Free online aim trainer. Click targets as fast as you can and measure your speed and accuracy. No download needed, works in your browser.">
+<link rel="canonical" href="https://reflexdrill.com/aim-trainer.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5681140072406573" crossorigin="anonymous"></script>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="canonical" href="https://reflexdrill.com/aim-trainer.html">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <nav class="site-nav">
   <div class="site-nav-inner">
-    <a href="index.html" class="site-logo">GAMER REFLEX LAB</a>
+    <a href="index.html" class="site-logo">Reflex Drill</a>
     <div class="site-links">
       <a href="click-speed-test.html">Click Speed</a>
       <a href="spacebar-counter.html">Spacebar</a>
@@ -36,35 +36,30 @@
 <div class="wrap">
 
   <div class="page-head">
-    <div class="eyebrow">Accuracy Test</div>
-    <h1>Aim Trainer</h1>
+    <h1>Aim trainer</h1>
     <p class="subhead">Click the targets as fast as you can. Miss the target and it counts against your accuracy.</p>
   </div>
 
-  <div class="stat-row">
+  <div class="stat-row" style="margin-top:0; border-top:none; padding-top:0;">
     <div>Hits<b id="hitCount">0</b></div>
     <div>Accuracy<b id="accuracy">—</b></div>
     <div>Time left<b id="timeLeft">30.0s</b></div>
   </div>
 
-  <div class="timer-select" id="timerSelect">
+  <div class="timer-select" id="timerSelect" style="margin-top:14px;">
     <button class="pill" data-time="15">15s</button>
-    <button class="pill" data-time="30">30s</button>
+    <button class="pill active" data-time="30">30s</button>
     <button class="pill" data-time="60">60s</button>
   </div>
 
   <div class="aim-zone" id="aimZone">
-    <div class="overlay-cta" id="overlayCta">
-      <span class="big">Click to start</span>
-      <span>Hit the targets as they appear</span>
-    </div>
+    <div class="overlay-cta" id="overlayCta"><span class="big">Click to begin</span><span>Hit the targets as they appear</span></div>
   </div>
 
   <div class="result" id="result">
     <div class="tier" id="tier">Result</div>
     <div class="final-cps" id="finalCps">0 hits</div>
-    <div class="meter"><div class="meter-fill" id="meterFill"></div></div>
-    <button class="retry" id="retryBtn">Try again</button>
+    <button class="retry" id="retryBtn">Run again</button>
   </div>
 
   <div class="content">
@@ -94,7 +89,7 @@
   </div>
 
   <footer>
-    <div class="tagline">BUILT FOR PEOPLE WHO CLICK FAST</div>
+    <div class="tagline">Reflex Drill</div>
     <div class="footer-links">
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
@@ -115,16 +110,9 @@
   const resultEl = document.getElementById('result');
   const tierEl = document.getElementById('tier');
   const finalCpsEl = document.getElementById('finalCps');
-  const meterFill = document.getElementById('meterFill');
   const retryBtn = document.getElementById('retryBtn');
 
-  let duration = 30;
-  let hits = 0;
-  let attempts = 0;
-  let startTime = null;
-  let timerInterval = null;
-  let running = false;
-  let currentTarget = null;
+  let duration = 30, hits = 0, attempts = 0, startTime = null, timerInterval = null, running = false, currentTarget = null;
 
   function setDuration(sec, btn){
     duration = sec;
@@ -137,12 +125,9 @@
     if(!btn) return;
     setDuration(Number(btn.dataset.time), btn);
   });
-  setDuration(30, timerSelect.children[1]);
 
   function resetState(){
-    running = false;
-    hits = 0;
-    attempts = 0;
+    running = false; hits = 0; attempts = 0;
     clearInterval(timerInterval);
     hitCountEl.textContent = '0';
     accuracyEl.textContent = '—';
@@ -150,41 +135,33 @@
     resultEl.classList.remove('show');
     removeTarget();
     overlayCta.style.display = 'flex';
-    overlayCta.innerHTML = '<span class="big">Click to start</span><span>Hit the targets as they appear</span>';
+    overlayCta.innerHTML = '<span class="big">Click to begin</span><span>Hit the targets as they appear</span>';
   }
 
-  function removeTarget(){
-    if(currentTarget){ currentTarget.remove(); currentTarget = null; }
-  }
+  function removeTarget(){ if(currentTarget){ currentTarget.remove(); currentTarget = null; } }
 
   function spawnTarget(){
     removeTarget();
     const rect = aimZone.getBoundingClientRect();
     const margin = 30;
-    const x = margin + Math.random() * (rect.width - margin * 2);
-    const y = margin + Math.random() * (rect.height - margin * 2);
+    const x = margin + Math.random() * (rect.width - margin*2);
+    const y = margin + Math.random() * (rect.height - margin*2);
     const t = document.createElement('div');
     t.className = 'aim-target';
-    t.style.left = x + 'px';
-    t.style.top = y + 'px';
-    t.addEventListener('click', (e) => {
-      e.stopPropagation();
-      registerHit(x, y);
-    });
+    t.style.left = x + 'px'; t.style.top = y + 'px';
+    t.addEventListener('click', (e) => { e.stopPropagation(); registerHit(x, y); });
     aimZone.appendChild(t);
     currentTarget = t;
   }
 
   function registerHit(x, y){
     if(!running) return;
-    hits++;
-    attempts++;
+    hits++; attempts++;
     hitCountEl.textContent = hits;
     accuracyEl.textContent = Math.round((hits/attempts)*100) + '%';
     const pop = document.createElement('div');
     pop.className = 'aim-pop';
-    pop.style.left = x + 'px';
-    pop.style.top = y + 'px';
+    pop.style.left = x + 'px'; pop.style.top = y + 'px';
     aimZone.appendChild(pop);
     setTimeout(() => pop.remove(), 350);
     spawnTarget();
@@ -196,28 +173,24 @@
     accuracyEl.textContent = Math.round((hits/attempts)*100) + '%';
     const flash = document.createElement('div');
     flash.className = 'miss-flash';
-    flash.style.left = x + 'px';
-    flash.style.top = y + 'px';
+    flash.style.left = x + 'px'; flash.style.top = y + 'px';
     aimZone.appendChild(flash);
     setTimeout(() => flash.remove(), 400);
   }
 
   function startTest(){
-    running = true;
-    startTime = Date.now();
+    running = true; startTime = Date.now();
     overlayCta.style.display = 'none';
     spawnTarget();
     timerInterval = setInterval(() => {
-      const elapsed = (Date.now() - startTime) / 1000;
-      const remaining = Math.max(0, duration - elapsed);
+      const remaining = Math.max(0, duration - (Date.now()-startTime)/1000);
       timeLeftEl.textContent = remaining.toFixed(1) + 's';
       if(remaining <= 0){ endTest(); }
     }, 50);
   }
 
   function endTest(){
-    clearInterval(timerInterval);
-    running = false;
+    clearInterval(timerInterval); running = false;
     removeTarget();
     timeLeftEl.textContent = '0.0s';
     showResult();
@@ -225,18 +198,15 @@
 
   function showResult(){
     const acc = attempts > 0 ? Math.round((hits/attempts)*100) : 0;
-    let tier, pct;
     const hps = hits / duration;
-    if(hps < 1){ tier = 'Casual aim'; pct = 20; }
-    else if(hps < 1.5){ tier = 'Steady aim'; pct = 45; }
-    else if(hps < 2){ tier = 'Sharp aim'; pct = 70; }
-    else if(hps < 2.5){ tier = 'Precise aim'; pct = 90; }
-    else { tier = 'Deadly aim'; pct = 100; }
-
+    let tier;
+    if(hps < 1) tier = 'Casual aim';
+    else if(hps < 1.5) tier = 'Steady aim';
+    else if(hps < 2) tier = 'Sharp aim';
+    else if(hps < 2.5) tier = 'Precise aim';
+    else tier = 'Deadly aim';
     tierEl.textContent = tier;
     finalCpsEl.textContent = hits + ' hits · ' + acc + '% accuracy';
-    meterFill.style.width = '0%';
-    requestAnimationFrame(() => { meterFill.style.width = pct + '%'; });
     resultEl.classList.add('show');
   }
 
@@ -249,6 +219,7 @@
   });
 
   retryBtn.addEventListener('click', resetState);
+  setDuration(30, timerSelect.children[1]);
 })();
 </script>
 

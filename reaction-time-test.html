@@ -5,19 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Reaction Time Test — Test Your Reflex Speed</title>
 <meta name="description" content="Free reaction time test. Click as soon as the box turns green and see your reaction speed in milliseconds. Works on mouse and touch.">
+<link rel="canonical" href="https://reflexdrill.com/reaction-time-test.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5681140072406573" crossorigin="anonymous"></script>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="canonical" href="https://reflexdrill.com/reaction-time-test.html">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <nav class="site-nav">
   <div class="site-nav-inner">
-    <a href="index.html" class="site-logo">GAMER REFLEX LAB</a>
+    <a href="index.html" class="site-logo">Reflex Drill</a>
     <div class="site-links">
       <a href="click-speed-test.html">Click Speed</a>
       <a href="spacebar-counter.html">Spacebar</a>
@@ -36,27 +36,23 @@
 <div class="wrap">
 
   <div class="page-head">
-    <div class="eyebrow">Reflex Test</div>
-    <h1>Reaction Time Test</h1>
-    <p class="subhead">Click the box to begin. Wait for it to turn green, then click as fast as you can. Clicking too early resets the attempt.</p>
+    <h1>Reaction time test</h1>
+    <p class="subhead">Click the pad to begin. Wait for it to turn green, then click as fast as you can. Clicking too early resets the attempt.</p>
   </div>
 
-  <div class="scoreboard">
+  <div class="readout">
+    <span class="br1"></span><span class="br2"></span><span class="br3"></span><span class="br4"></span>
     <div class="cps-readout" id="cpsReadout">— ms</div>
-    <div class="cps-label">Last reaction time</div>
-  </div>
-
-  <div class="stat-row">
-    <div>Best<b id="bestMs">—</b></div>
-    <div>Average (last 5)<b id="avgMs">—</b></div>
-    <div>Attempts<b id="attemptCount">0</b></div>
-  </div>
-
-  <div class="click-zone state-wait" id="clickZone" role="button" tabindex="0" aria-label="Reaction test box, click to begin">
-    <div class="cta">
-      <span class="big">Click to start</span>
-      <span>Wait for green, then click</span>
+    <div class="cps-label">last reaction time</div>
+    <div class="stat-row">
+      <div>Best<b id="bestMs">—</b></div>
+      <div>Average (last 5)<b id="avgMs">—</b></div>
+      <div>Attempts<b id="attemptCount">0</b></div>
     </div>
+  </div>
+
+  <div class="click-zone state-wait" id="clickZone" role="button" tabindex="0" aria-label="Reaction test pad, click to begin">
+    <div class="cta"><span class="big">Click to begin</span><span>Wait for green, then click</span></div>
   </div>
 
   <div class="content">
@@ -65,7 +61,7 @@
 
     <div class="faq-item">
       <h3>Why did it say "too soon"?</h3>
-      <p>If you click before the box turns green, the attempt doesn't count as a real reaction, since you reacted to nothing. The test resets so you can try again with a fresh random delay.</p>
+      <p>If you click before the pad turns green, the attempt doesn't count as a real reaction, since you reacted to nothing. The test resets so you can try again with a fresh random delay.</p>
     </div>
     <div class="faq-item">
       <h3>Why is the delay random each time?</h3>
@@ -73,7 +69,7 @@
     </div>
     <div class="faq-item">
       <h3>Does this work on mobile?</h3>
-      <p>Yes, you can tap the box the same way you'd click it on desktop.</p>
+      <p>Yes, you can tap the pad the same way you'd click it on desktop.</p>
     </div>
     <div class="faq-item">
       <h3>What's a good reaction time for gamers?</h3>
@@ -90,7 +86,7 @@
   </div>
 
   <footer>
-    <div class="tagline">BUILT FOR PEOPLE WHO CLICK FAST</div>
+    <div class="tagline">Reflex Drill</div>
     <div class="footer-links">
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
@@ -109,11 +105,7 @@
   const attemptCountEl = document.getElementById('attemptCount');
   const ctaEl = clickZone.querySelector('.cta');
 
-  let state = 'idle'; // idle | waiting | go | early
-  let goTimeout = null;
-  let goTime = null;
-  let history = [];
-  let best = null;
+  let state = 'idle', goTimeout = null, goTime = null, history = [], best = null;
 
   function setCta(big, small){
     ctaEl.innerHTML = '<span class="big">' + big + '</span><span>' + small + '</span>';
@@ -122,36 +114,23 @@
   function setState(newState){
     clickZone.classList.remove('state-wait', 'state-go', 'state-early');
     state = newState;
-    if(state === 'waiting'){
-      clickZone.classList.add('state-wait');
-      setCta('Wait for green...', 'Don\'t click yet');
-    } else if(state === 'go'){
-      clickZone.classList.add('state-go');
-      setCta('Click now!', '');
-    } else if(state === 'early'){
-      clickZone.classList.add('state-early');
-      setCta('Too soon!', 'Click to try again');
-    } else {
-      clickZone.classList.add('state-wait');
-      setCta('Click to start', 'Wait for green, then click');
-    }
+    if(state === 'waiting'){ clickZone.classList.add('state-wait'); setCta('Wait for green...', "Don't click yet"); }
+    else if(state === 'go'){ clickZone.classList.add('state-go'); setCta('Click now', ''); }
+    else if(state === 'early'){ clickZone.classList.add('state-early'); setCta('Too soon', 'Click to try again'); }
+    else { clickZone.classList.add('state-wait'); setCta('Click to begin', 'Wait for green, then click'); }
   }
 
   function startWait(){
     clearTimeout(goTimeout);
     setState('waiting');
-    const delay = 1500 + Math.random() * 3000; // 1.5s - 4.5s
-    goTimeout = setTimeout(() => {
-      goTime = Date.now();
-      setState('go');
-    }, delay);
+    const delay = 1500 + Math.random() * 3000;
+    goTimeout = setTimeout(() => { goTime = Date.now(); setState('go'); }, delay);
   }
 
   function recordResult(ms){
     history.push(ms);
     if(history.length > 5) history.shift();
     if(best === null || ms < best) best = ms;
-
     readout.textContent = ms + ' ms';
     bestMsEl.textContent = best + ' ms';
     const avg = Math.round(history.reduce((a,b) => a+b, 0) / history.length);
@@ -160,29 +139,15 @@
   }
 
   function handleInteract(){
-    if(state === 'idle'){
-      startWait();
-    } else if(state === 'waiting'){
-      clearTimeout(goTimeout);
-      setState('early');
-    } else if(state === 'go'){
-      const reaction = Date.now() - goTime;
-      recordResult(reaction);
-      setState('idle');
-      setTimeout(() => { if(state === 'idle') setCta('Click to start', 'Wait for green, then click'); }, 10);
-    } else if(state === 'early'){
-      startWait();
-    }
+    if(state === 'idle'){ startWait(); }
+    else if(state === 'waiting'){ clearTimeout(goTimeout); setState('early'); }
+    else if(state === 'go'){ recordResult(Date.now() - goTime); setState('idle'); }
+    else if(state === 'early'){ startWait(); }
   }
 
   clickZone.addEventListener('click', handleInteract);
   clickZone.addEventListener('touchstart', (e) => { e.preventDefault(); handleInteract(); }, { passive: false });
-  clickZone.addEventListener('keydown', (e) => {
-    if(e.key === 'Enter' || e.key === ' '){
-      e.preventDefault();
-      handleInteract();
-    }
-  });
+  clickZone.addEventListener('keydown', (e) => { if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); handleInteract(); } });
 
   setState('idle');
 })();

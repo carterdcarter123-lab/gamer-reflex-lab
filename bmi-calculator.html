@@ -5,52 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>BMI Calculator — Free Body Mass Index Calculator</title>
 <meta name="description" content="Free BMI calculator. Enter your height and weight in metric or imperial units to calculate your body mass index and category.">
+<link rel="canonical" href="https://reflexdrill.com/bmi-calculator.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5681140072406573" crossorigin="anonymous"></script>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="canonical" href="https://reflexdrill.com/bmi-calculator.html">
 <link rel="stylesheet" href="style.css">
-<style>
-  .unit-toggle{ display: flex; justify-content: center; gap: 8px; margin-bottom: 22px; }
-  .bmi-card{
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 26px;
-  }
-  .bmi-fields{ display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
-  .bmi-field{ text-align: left; }
-  .bmi-field label{
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    display: block;
-    margin-bottom: 6px;
-  }
-  .bmi-field input{
-    background: var(--surface-2);
-    border: 1px solid var(--line);
-    color: var(--cream);
-    border-radius: 8px;
-    padding: 10px 12px;
-    font-family: 'Space Mono', monospace;
-    font-size: 15px;
-    width: 100px;
-  }
-  .bmi-result{ text-align: center; margin-top: 26px; }
-  .bmi-result .value{ font-family: 'Space Mono', monospace; font-weight: 700; font-size: 48px; color: var(--amber); }
-  .bmi-result .category{ font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-top: 4px; }
-</style>
 </head>
 <body>
 
 <nav class="site-nav">
   <div class="site-nav-inner">
-    <a href="index.html" class="site-logo">GAMER REFLEX LAB</a>
+    <a href="index.html" class="site-logo">Reflex Drill</a>
     <div class="site-links">
       <a href="click-speed-test.html">Click Speed</a>
       <a href="spacebar-counter.html">Spacebar</a>
@@ -61,6 +28,7 @@
       <a href="percentage-calculator.html">Percentage</a>
       <a href="age-calculator.html">Age Calculator</a>
       <a href="bmi-calculator.html" class="active">BMI Calculator</a>
+      <a href="random-number-generator.html">Random Number</a>
     </div>
   </div>
 </nav>
@@ -68,8 +36,7 @@
 <div class="wrap">
 
   <div class="page-head">
-    <div class="eyebrow">Everyday Tools</div>
-    <h1>BMI Calculator</h1>
+    <h1>BMI calculator</h1>
     <p class="subhead">Enter your height and weight to calculate your body mass index.</p>
   </div>
 
@@ -88,7 +55,6 @@
       <div class="bmi-field"><label>Height (in)</label><input type="number" id="heightIn" value="7"></div>
       <div class="bmi-field"><label>Weight (lb)</label><input type="number" id="weightLb" value="143"></div>
     </div>
-
     <div class="bmi-result">
       <div class="value" id="bmiValue">22.5</div>
       <div class="category" id="bmiCategory">Normal weight</div>
@@ -114,7 +80,7 @@
   </div>
 
   <footer>
-    <div class="tagline">BUILT FOR PEOPLE WHO CLICK FAST</div>
+    <div class="tagline">Reflex Drill</div>
     <div class="footer-links">
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
@@ -144,26 +110,21 @@
     calculate();
   });
 
-  function categoryFor(bmi){
-    if(bmi < 18.5) return 'Underweight';
-    if(bmi < 25) return 'Normal weight';
-    if(bmi < 30) return 'Overweight';
-    return 'Obese';
-  }
+  function categoryFor(bmi){ if(bmi<18.5) return 'Underweight'; if(bmi<25) return 'Normal weight'; if(bmi<30) return 'Overweight'; return 'Obese'; }
 
   function calculate(){
     let bmi;
     if(unit === 'metric'){
       const cm = parseFloat(document.getElementById('heightCm').value) || 0;
       const kg = parseFloat(document.getElementById('weightKg').value) || 0;
-      const m = cm / 100;
-      bmi = m > 0 ? kg / (m*m) : 0;
+      const m = cm/100;
+      bmi = m > 0 ? kg/(m*m) : 0;
     } else {
       const ft = parseFloat(document.getElementById('heightFt').value) || 0;
       const inch = parseFloat(document.getElementById('heightIn').value) || 0;
       const lb = parseFloat(document.getElementById('weightLb').value) || 0;
-      const totalIn = ft * 12 + inch;
-      bmi = totalIn > 0 ? (lb / (totalIn*totalIn)) * 703 : 0;
+      const totalIn = ft*12 + inch;
+      bmi = totalIn > 0 ? (lb/(totalIn*totalIn))*703 : 0;
     }
     bmiValue.textContent = bmi.toFixed(1);
     bmiCategory.textContent = categoryFor(bmi);

@@ -5,73 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>GPA Calculator — Free Grade Point Average Calculator</title>
 <meta name="description" content="Free GPA calculator. Add your courses, credits, and grades to instantly calculate your grade point average on a 4.0 scale.">
+<link rel="canonical" href="https://reflexdrill.com/gpa-calculator.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5681140072406573" crossorigin="anonymous"></script>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="canonical" href="https://reflexdrill.com/gpa-calculator.html">
 <link rel="stylesheet" href="style.css">
-<style>
-  .gpa-table{ width: 100%; border-collapse: collapse; margin-top: 8px; }
-  .gpa-table th{ text-align: left; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); padding: 0 8px 10px; font-weight: 400; }
-  .gpa-table td{ padding: 6px 8px; }
-  .gpa-table input, .gpa-table select{
-    width: 100%;
-    background: var(--surface-2);
-    border: 1px solid var(--line);
-    color: var(--cream);
-    border-radius: 8px;
-    padding: 10px 10px;
-    font-family: 'Manrope', sans-serif;
-    font-size: 14px;
-  }
-  .gpa-table input:focus, .gpa-table select:focus{ outline: 2px solid var(--violet); }
-  .row-remove{
-    background: none; border: none; color: var(--muted); cursor: pointer; font-size: 18px; padding: 6px;
-  }
-  .row-remove:hover{ color: var(--red); }
-  .gpa-actions{ display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
-  .btn-secondary{
-    font-family: 'Space Mono', monospace;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    color: var(--cream);
-    padding: 10px 20px;
-    border-radius: 999px;
-    font-size: 13px;
-    cursor: pointer;
-  }
-  .btn-secondary:hover{ border-color: var(--violet); }
-  .gpa-result{
-    margin-top: 22px;
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 22px;
-    text-align: center;
-  }
-  .gpa-result .value{
-    font-family: 'Space Mono', monospace;
-    font-weight: 700;
-    font-size: 48px;
-    color: var(--amber);
-  }
-  .gpa-result .label{
-    font-family: 'Space Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-top: 4px;
-  }
-</style>
 </head>
 <body>
 
 <nav class="site-nav">
   <div class="site-nav-inner">
-    <a href="index.html" class="site-logo">GAMER REFLEX LAB</a>
+    <a href="index.html" class="site-logo">Reflex Drill</a>
     <div class="site-links">
       <a href="click-speed-test.html">Click Speed</a>
       <a href="spacebar-counter.html">Spacebar</a>
@@ -79,6 +25,10 @@
       <a href="aim-trainer.html">Aim Trainer</a>
       <a href="typing-speed-test.html">Typing Speed</a>
       <a href="gpa-calculator.html" class="active">GPA Calculator</a>
+      <a href="percentage-calculator.html">Percentage</a>
+      <a href="age-calculator.html">Age Calculator</a>
+      <a href="bmi-calculator.html">BMI Calculator</a>
+      <a href="random-number-generator.html">Random Number</a>
     </div>
   </div>
 </nav>
@@ -86,20 +36,12 @@
 <div class="wrap">
 
   <div class="page-head">
-    <div class="eyebrow">Student Tools</div>
-    <h1>GPA Calculator</h1>
+    <h1>GPA calculator</h1>
     <p class="subhead">Add each course with its credit hours and letter grade to calculate your grade point average on a standard 4.0 scale.</p>
   </div>
 
   <table class="gpa-table" id="gpaTable">
-    <thead>
-      <tr>
-        <th style="width:45%">Course</th>
-        <th style="width:20%">Credits</th>
-        <th style="width:25%">Grade</th>
-        <th style="width:10%"></th>
-      </tr>
-    </thead>
+    <thead><tr><th style="width:45%">Course</th><th style="width:20%">Credits</th><th style="width:25%">Grade</th><th style="width:10%"></th></tr></thead>
     <tbody id="gpaRows"></tbody>
   </table>
 
@@ -132,7 +74,7 @@
   </div>
 
   <footer>
-    <div class="tagline">BUILT FOR PEOPLE WHO CLICK FAST</div>
+    <div class="tagline">Reflex Drill</div>
     <div class="footer-links">
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
@@ -149,54 +91,38 @@
   const addRowBtn = document.getElementById('addRow');
   const clearAllBtn = document.getElementById('clearAll');
 
-  const gradePoints = {
-    'A+': 4.0, 'A': 4.0, 'A-': 3.7,
-    'B+': 3.3, 'B': 3.0, 'B-': 2.7,
-    'C+': 2.3, 'C': 2.0, 'C-': 1.7,
-    'D+': 1.3, 'D': 1.0, 'D-': 0.7,
-    'F': 0.0
-  };
+  const gradePoints = { 'A+':4.0,'A':4.0,'A-':3.7,'B+':3.3,'B':3.0,'B-':2.7,'C+':2.3,'C':2.0,'C-':1.7,'D+':1.3,'D':1.0,'D-':0.7,'F':0.0 };
 
   function makeRow(name, credits, grade){
     const tr = document.createElement('tr');
-    const gradeOptions = Object.keys(gradePoints).map(g =>
-      '<option value="' + g + '"' + (g === grade ? ' selected' : '') + '>' + g + '</option>'
-    ).join('');
+    const gradeOptions = Object.keys(gradePoints).map(g => '<option value="'+g+'"'+(g===grade?' selected':'')+'>'+g+'</option>').join('');
     tr.innerHTML =
-      '<td><input type="text" class="course-name" placeholder="e.g. Biology 101" value="' + (name || '') + '"></td>' +
-      '<td><input type="number" class="course-credits" min="0" step="0.5" value="' + (credits !== undefined ? credits : 3) + '"></td>' +
-      '<td><select class="course-grade">' + gradeOptions + '</select></td>' +
+      '<td><input type="text" class="course-name" placeholder="e.g. Biology 101" value="'+(name||'')+'"></td>'+
+      '<td><input type="number" class="course-credits" min="0" step="0.5" value="'+(credits!==undefined?credits:3)+'"></td>'+
+      '<td><select class="course-grade">'+gradeOptions+'</select></td>'+
       '<td><button class="row-remove" aria-label="Remove course">✕</button></td>';
     tr.querySelector('.row-remove').addEventListener('click', () => { tr.remove(); calculate(); });
     tr.querySelectorAll('input, select').forEach(el => el.addEventListener('input', calculate));
     return tr;
   }
 
-  function addRow(name, credits, grade){
-    rowsBody.appendChild(makeRow(name, credits, grade));
-    calculate();
-  }
+  function addRow(name, credits, grade){ rowsBody.appendChild(makeRow(name, credits, grade)); calculate(); }
 
   function calculate(){
-    let totalPoints = 0;
-    let totalCredits = 0;
+    let totalPoints = 0, totalCredits = 0;
     rowsBody.querySelectorAll('tr').forEach(tr => {
       const credits = parseFloat(tr.querySelector('.course-credits').value) || 0;
       const grade = tr.querySelector('.course-grade').value;
       const points = gradePoints[grade] !== undefined ? gradePoints[grade] : 0;
-      totalPoints += points * credits;
-      totalCredits += credits;
+      totalPoints += points * credits; totalCredits += credits;
     });
-    const gpa = totalCredits > 0 ? (totalPoints / totalCredits) : 0;
-    gpaValue.textContent = gpa.toFixed(2);
+    gpaValue.textContent = (totalCredits > 0 ? totalPoints/totalCredits : 0).toFixed(2);
   }
 
   addRowBtn.addEventListener('click', () => addRow());
   clearAllBtn.addEventListener('click', () => { rowsBody.innerHTML = ''; addRow(); addRow(); addRow(); calculate(); });
 
-  addRow('', 3, 'A');
-  addRow('', 3, 'B');
-  addRow('', 3, 'A');
+  addRow('', 3, 'A'); addRow('', 3, 'B'); addRow('', 3, 'A');
 })();
 </script>
 

@@ -8,19 +8,19 @@
 <link rel="alternate" hreflang="en" href="https://reflexdrill.com/click-speed-test.html">
 <link rel="alternate" hreflang="es" href="https://reflexdrill.com/es/click-speed-test.html">
 <link rel="alternate" hreflang="x-default" href="https://reflexdrill.com/click-speed-test.html">
+<link rel="canonical" href="https://reflexdrill.com/click-speed-test.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5681140072406573" crossorigin="anonymous"></script>
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="canonical" href="https://reflexdrill.com/click-speed-test.html">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <nav class="site-nav">
   <div class="site-nav-inner">
-    <a href="index.html" class="site-logo">GAMER REFLEX LAB</a>
+    <a href="index.html" class="site-logo">Reflex Drill</a>
     <div class="site-links">
       <a href="click-speed-test.html" class="active">Click Speed</a>
       <a href="spacebar-counter.html">Spacebar</a>
@@ -33,8 +33,8 @@
       <a href="bmi-calculator.html">BMI Calculator</a>
       <a href="random-number-generator.html">Random Number</a>
     </div>
-    <div class="lang-switch" style="font-family:'Space Mono',monospace; font-size:11px; color:var(--muted); display:flex; gap:8px; align-items:center;">
-      <a href="click-speed-test.html" style="color:var(--amber); font-weight:700; text-decoration:none;">EN</a> · <a href="es/click-speed-test.html" style="color:var(--muted); text-decoration:none;">ES</a>
+    <div class="lang-switch">
+      <a href="click-speed-test.html" class="active">EN</a> · <a href="es/click-speed-test.html">ES</a>
     </div>
   </div>
 </nav>
@@ -42,40 +42,35 @@
 <div class="wrap">
 
   <div class="page-head">
-    <div class="eyebrow">Mouse Test</div>
-    <h1>Click Speed Test</h1>
-    <p class="subhead">Find out how many clicks per second (CPS) you can hit. Pick a time, click as fast as you can inside the box, and get your score.</p>
+    <h1>Click speed test</h1>
+    <p class="subhead">Pick a duration and click inside the pad as fast as you can. Your speed is measured live in clicks per second.</p>
   </div>
 
-  <div class="scoreboard">
+  <div class="readout">
+    <span class="br1"></span><span class="br2"></span><span class="br3"></span><span class="br4"></span>
     <div class="cps-readout" id="cpsReadout">0.0</div>
-    <div class="cps-label">Clicks per second</div>
-  </div>
-
-  <div class="stat-row">
-    <div>Clicks<b id="clickCount">0</b></div>
-    <div>Time left<b id="timeLeft">5.0s</b></div>
+    <div class="cps-label">clicks per second</div>
+    <div class="stat-row">
+      <div>Clicks<b id="clickCount">0</b></div>
+      <div>Time left<b id="timeLeft">5.0s</b></div>
+    </div>
   </div>
 
   <div class="timer-select" id="timerSelect">
-    <button class="pill" data-time="5">5s</button>
+    <button class="pill active" data-time="5">5s</button>
     <button class="pill" data-time="10">10s</button>
     <button class="pill" data-time="30">30s</button>
     <button class="pill" data-time="60">60s</button>
   </div>
 
   <div class="click-zone" id="clickZone" role="button" tabindex="0" aria-label="Click zone, click as fast as you can to start the test">
-    <div class="cta">
-      <span class="big">Click to start</span>
-      <span>Tap or click as fast as you can</span>
-    </div>
+    <div class="cta"><span class="big">Click to begin</span><span>Tap or click as fast as you can</span></div>
   </div>
 
   <div class="result" id="result">
     <div class="tier" id="tier">Result</div>
     <div class="final-cps" id="finalCps">0.0 CPS</div>
-    <div class="meter"><div class="meter-fill" id="meterFill"></div></div>
-    <button class="retry" id="retryBtn">Try again</button>
+    <button class="retry" id="retryBtn">Run again</button>
   </div>
 
   <div class="content">
@@ -113,7 +108,7 @@
   </div>
 
   <footer>
-    <div class="tagline">BUILT FOR PEOPLE WHO CLICK FAST</div>
+    <div class="tagline">Reflex Drill</div>
     <div class="footer-links">
       <a href="about.html">About</a>
       <a href="contact.html">Contact</a>
@@ -133,14 +128,9 @@
   const resultEl = document.getElementById('result');
   const tierEl = document.getElementById('tier');
   const finalCpsEl = document.getElementById('finalCps');
-  const meterFill = document.getElementById('meterFill');
   const retryBtn = document.getElementById('retryBtn');
 
-  let duration = 5;
-  let clicks = 0;
-  let startTime = null;
-  let timerInterval = null;
-  let running = false;
+  let duration = 5, clicks = 0, startTime = null, timerInterval = null, running = false;
 
   function setDuration(sec, btn){
     duration = sec;
@@ -148,111 +138,79 @@
     if(btn) btn.classList.add('active');
     resetState();
   }
-
   timerSelect.addEventListener('click', (e) => {
     const btn = e.target.closest('.pill');
     if(!btn) return;
     setDuration(Number(btn.dataset.time), btn);
   });
-  setDuration(5, timerSelect.children[0]);
 
   function resetState(){
-    running = false;
-    clicks = 0;
+    running = false; clicks = 0;
     clearInterval(timerInterval);
     cpsReadout.textContent = '0.0';
-    cpsReadout.classList.remove('pulse');
     clickCountEl.textContent = '0';
     timeLeftEl.textContent = duration.toFixed(1) + 's';
     resultEl.classList.remove('show');
-    clickZone.querySelector('.cta').innerHTML = '<span class="big">Click to start</span><span>Tap or click as fast as you can</span>';
+    clickZone.querySelector('.cta').innerHTML = '<span class="big">Click to begin</span><span>Tap or click as fast as you can</span>';
   }
 
   function spawnRipple(x, y){
     const r = document.createElement('div');
     r.className = 'ripple';
-    r.style.left = x + 'px';
-    r.style.top = y + 'px';
+    r.style.left = x + 'px'; r.style.top = y + 'px';
     clickZone.appendChild(r);
-    setTimeout(() => r.remove(), 500);
+    setTimeout(() => r.remove(), 400);
   }
 
   function handleHit(clientX, clientY){
     const rect = clickZone.getBoundingClientRect();
-    const x = clientX - rect.left;
-    const y = clientY - rect.top;
-    spawnRipple(x, y);
-
+    spawnRipple(clientX - rect.left, clientY - rect.top);
     if(!running){ startTest(); }
-
     if(running){
       clicks++;
       clickCountEl.textContent = clicks;
       const elapsed = (Date.now() - startTime) / 1000;
-      const liveCps = elapsed > 0 ? clicks / elapsed : 0;
-      cpsReadout.textContent = liveCps.toFixed(1);
-      cpsReadout.classList.add('pulse');
-      setTimeout(() => cpsReadout.classList.remove('pulse'), 80);
+      cpsReadout.textContent = (elapsed > 0 ? clicks / elapsed : 0).toFixed(1);
     }
   }
 
   function startTest(){
-    running = true;
-    startTime = Date.now();
-    clickZone.querySelector('.cta').innerHTML = '<span class="big">Go!</span><span>Keep clicking</span>';
+    running = true; startTime = Date.now();
+    clickZone.querySelector('.cta').innerHTML = '<span class="big">Go</span><span>Keep clicking</span>';
     timerInterval = setInterval(() => {
-      const elapsed = (Date.now() - startTime) / 1000;
-      const remaining = Math.max(0, duration - elapsed);
+      const remaining = Math.max(0, duration - (Date.now()-startTime)/1000);
       timeLeftEl.textContent = remaining.toFixed(1) + 's';
       if(remaining <= 0){ endTest(); }
     }, 50);
   }
 
   function endTest(){
-    clearInterval(timerInterval);
-    running = false;
+    clearInterval(timerInterval); running = false;
     const finalCps = clicks / duration;
     timeLeftEl.textContent = '0.0s';
     cpsReadout.textContent = finalCps.toFixed(1);
     showResult(finalCps);
-    clickZone.querySelector('.cta').innerHTML = '<span class="big">Time!</span><span>Press try again to retry</span>';
+    clickZone.querySelector('.cta').innerHTML = '<span class="big">Time</span><span>Run again to retry</span>';
   }
 
   function showResult(cps){
-    let tier, pct;
-    if(cps < 4){ tier = 'Casual clicker'; pct = 20; }
-    else if(cps < 6){ tier = 'Skilled clicker'; pct = 45; }
-    else if(cps < 8){ tier = 'Pro clicker'; pct = 70; }
-    else if(cps < 10){ tier = 'Elite clicker'; pct = 90; }
-    else { tier = 'Legendary clicker'; pct = 100; }
-
+    let tier;
+    if(cps < 4) tier = 'Casual clicker';
+    else if(cps < 6) tier = 'Skilled clicker';
+    else if(cps < 8) tier = 'Pro clicker';
+    else if(cps < 10) tier = 'Elite clicker';
+    else tier = 'Legendary clicker';
     tierEl.textContent = tier;
     finalCpsEl.textContent = cps.toFixed(1) + ' CPS';
-    meterFill.style.width = '0%';
-    requestAnimationFrame(() => { meterFill.style.width = pct + '%'; });
     resultEl.classList.add('show');
   }
 
-  clickZone.addEventListener('click', (e) => {
-    if(e.clientX === 0 && e.clientY === 0) return;
-    handleHit(e.clientX, e.clientY);
-  });
-
-  clickZone.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    const t = e.changedTouches[0];
-    handleHit(t.clientX, t.clientY);
-  }, { passive: false });
-
-  clickZone.addEventListener('keydown', (e) => {
-    if(e.key === 'Enter' || e.key === ' '){
-      e.preventDefault();
-      const rect = clickZone.getBoundingClientRect();
-      handleHit(rect.left + rect.width/2, rect.top + rect.height/2);
-    }
-  });
-
+  clickZone.addEventListener('click', (e) => { if(e.clientX===0 && e.clientY===0) return; handleHit(e.clientX, e.clientY); });
+  clickZone.addEventListener('touchstart', (e) => { e.preventDefault(); const t=e.changedTouches[0]; handleHit(t.clientX, t.clientY); }, { passive: false });
+  clickZone.addEventListener('keydown', (e) => { if(e.key==='Enter'||e.key===' '){ e.preventDefault(); const r=clickZone.getBoundingClientRect(); handleHit(r.left+r.width/2, r.top+r.height/2); } });
   retryBtn.addEventListener('click', resetState);
+
+  setDuration(5, timerSelect.children[0]);
 })();
 </script>
 
