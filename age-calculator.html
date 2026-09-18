@@ -51,20 +51,13 @@
   </div>
 
   <div class="content">
-    <h2>How age is calculated here</h2>
-    <p>Your age in years, months, and days is calculated by comparing your birth date to today's date and accounting for varying month lengths and leap years, not just a simple day count divided evenly.</p>
+    <h2>Why the months and days look uneven</h2>
+    <p>Because calendar months aren't all the same length, your "months and days since your last birthday" figure isn't a clean 30-day chunk — it's the real distance on the actual calendar, leap years included. That's also why the total-days count is exact rather than an estimate: it's counting real days elapsed, not years × 365.</p>
+    <p>Nothing entered here is saved anywhere — the whole thing runs in your browser and resets the moment you leave the page.</p>
 
     <div class="faq-item">
-      <h3>Why do months and days sometimes look uneven?</h3>
-      <p>Because months have different numbers of days, the months and days shown represent the actual calendar distance from your last birthday, not a fixed 30-day approximation.</p>
-    </div>
-    <div class="faq-item">
-      <h3>Does this account for leap years?</h3>
-      <p>Yes, the total day count factors in leap years automatically since it's based on real calendar dates rather than an estimate.</p>
-    </div>
-    <div class="faq-item">
-      <h3>Is my birth date stored anywhere?</h3>
-      <p>No, the calculation happens entirely in your browser and nothing is saved or sent anywhere.</p>
+      <h3>What's the "days until next birthday" counting from?</h3>
+      <p>It finds the next occurrence of your birth month and day from today — if that date already passed this year, it counts to next year's instead.</p>
     </div>
   </div>
 
