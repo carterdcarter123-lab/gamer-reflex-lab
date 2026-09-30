@@ -31,19 +31,50 @@ body{
 .wrap{ max-width: 720px; margin: 0 auto; padding: 0 20px 90px; }
 
 /* ---------- Nav ---------- */
-.site-nav{ border-bottom: 2px solid var(--ink); background: var(--paper); position: sticky; top: 0; z-index: 20; }
+.site-nav{ border-bottom: 2px solid var(--ink); background: var(--paper); position: sticky; top: 0; z-index: 30; }
 .site-nav-inner{
-  max-width: 720px; margin: 0 auto; padding: 16px 20px;
-  display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 10px 20px;
+  max-width: 1100px; margin: 0 auto; padding: 18px 32px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px 24px;
 }
-.site-logo{ font-family: 'Fraunces', serif; font-weight: 700; font-size: 18px; color: var(--ink); text-decoration: none; }
-.site-links{ display: flex; gap: 16px; flex-wrap: wrap; }
-.site-links a{ font-size: 14px; color: var(--muted); text-decoration: none; padding-bottom: 3px; border-bottom: 2px solid transparent; }
-.site-links a:hover{ color: var(--ink); }
-.site-links a.active{ color: var(--ink); border-bottom-color: var(--red); font-weight: 500; }
+.site-logo{ font-family: 'Fraunces', serif; font-weight: 700; font-size: 19px; color: var(--ink); text-decoration: none; }
+.nav-groups{ display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+
+.nav-dropdown{ position: relative; }
+.nav-dropdown-toggle{
+  font-family: 'IBM Plex Sans', sans-serif;
+  background: none; border: none; cursor: pointer;
+  font-size: 14.5px; color: var(--muted);
+  padding: 8px 10px; border-radius: 3px;
+  display: flex; align-items: center; gap: 5px;
+  transition: color 0.18s ease, background 0.18s ease;
+}
+.nav-dropdown-toggle:hover, .nav-dropdown-toggle[aria-expanded="true"]{ color: var(--ink); background: var(--panel); }
+.nav-dropdown-toggle.has-active{ color: var(--ink); font-weight: 500; }
+.nav-dropdown-toggle .caret{ font-size: 10px; transition: transform 0.22s cubic-bezier(.4,0,.2,1); }
+.nav-dropdown-toggle[aria-expanded="true"] .caret{ transform: rotate(180deg); }
+
+.nav-dropdown-menu{
+  position: absolute; top: calc(100% + 8px); left: 0;
+  background: var(--paper); border: 2px solid var(--ink);
+  min-width: 210px; padding: 6px;
+  opacity: 0; visibility: hidden; transform: translateY(-6px);
+  transition: opacity 0.2s cubic-bezier(.4,0,.2,1), transform 0.2s cubic-bezier(.4,0,.2,1), visibility 0.2s;
+  z-index: 40;
+}
+.nav-dropdown-menu.open{ opacity: 1; visibility: visible; transform: translateY(0); }
+.nav-dropdown-menu a{
+  display: block; padding: 9px 12px; font-size: 14px;
+  color: var(--muted); text-decoration: none; border-radius: 2px;
+  transition: color 0.15s ease, background 0.15s ease, padding-left 0.15s ease;
+}
+.nav-dropdown-menu a:hover{ color: var(--ink); background: var(--panel); padding-left: 16px; }
+.nav-dropdown-menu a.active{ color: var(--ink); font-weight: 600; }
+.nav-dropdown-menu a.active::before{ content: "— "; }
+
 .lang-switch{ font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--muted); display: flex; gap: 8px; align-items: center; }
-.lang-switch a{ color: var(--muted); text-decoration: none; }
+.lang-switch a{ color: var(--muted); text-decoration: none; transition: color 0.15s ease; }
 .lang-switch a.active{ color: var(--ink); font-weight: 600; }
+.lang-switch a:hover{ color: var(--ink); }
 
 /* ---------- Page head ---------- */
 .page-head{ padding: 52px 0 6px; }
@@ -66,7 +97,7 @@ h1{ font-family: 'Fraunces', serif; font-weight: 600; font-size: clamp(32px, 6vw
 
 /* ---------- Segmented control (timer / unit toggle) ---------- */
 .timer-select{ display: flex; margin-top: 28px; border: 2px solid var(--ink); }
-.pill{ flex: 1; background: var(--paper); border: none; border-right: 2px solid var(--ink); padding: 12px 0; font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500; color: var(--ink); cursor: pointer; }
+.pill{ flex: 1; background: var(--paper); border: none; border-right: 2px solid var(--ink); padding: 12px 0; font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 500; color: var(--ink); cursor: pointer; transition: background 0.18s ease, color 0.18s ease; }
 .pill:last-child{ border-right: none; }
 .pill.active{ background: var(--ink); color: var(--paper); }
 .pill:hover:not(.active){ background: var(--panel-deep); }
@@ -97,7 +128,7 @@ h1{ font-family: 'Fraunces', serif; font-weight: 600; font-size: clamp(32px, 6vw
 .result::before{ content: ""; position: absolute; top: -1px; left: 0; right: 0; height: 2px; background-image: repeating-linear-gradient(90deg, var(--ink) 0 8px, transparent 8px 14px); }
 .result .tier{ font-family: 'Fraunces', serif; font-size: 19px; font-weight: 600; margin-bottom: 6px; }
 .result .final-cps{ font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: var(--muted); margin-bottom: 18px; }
-.retry{ font-family: 'IBM Plex Sans', sans-serif; background: var(--ink); color: var(--paper); border: none; padding: 11px 26px; font-size: 14px; font-weight: 500; cursor: pointer; }
+.retry{ font-family: 'IBM Plex Sans', sans-serif; background: var(--ink); color: var(--paper); border: none; padding: 11px 26px; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.18s ease; }
 .retry:hover{ background: var(--red-deep); }
 .meter{ display: none; }
 
@@ -121,8 +152,8 @@ footer .tagline{ opacity: 0.9; }
 
 /* ---------- Hub page: tool grid ---------- */
 .tool-grid{ display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 2px; margin-top: 8px; background: var(--ink); border: 2px solid var(--ink); }
-.tool-card{ background: var(--paper); padding: 22px; text-decoration: none; color: var(--ink); display: block; }
-.tool-card:hover{ background: var(--panel); }
+.tool-card{ background: var(--paper); padding: 22px; text-decoration: none; color: var(--ink); display: block; transition: background 0.2s ease, transform 0.2s cubic-bezier(.4,0,.2,1); }
+.tool-card:hover{ background: var(--panel); transform: translateY(-2px); }
 .tool-card .tag{ font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--red); margin-bottom: 10px; display: block; }
 .tool-card h3{ font-family: 'Fraunces', serif; margin: 0 0 8px; font-size: 18px; font-weight: 600; }
 .tool-card p{ margin: 0; color: var(--muted); font-size: 14px; line-height: 1.5; }
